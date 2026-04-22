@@ -1,0 +1,26 @@
+/* Global resets and base styles for Summa Capital */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #4A4A4A;
+  background: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1A1A1A;
+}
+
+img { max-width: 100%; display: block; }
+
+button { font-family: inherit; }
+
+main { min-height: 100vh; }
