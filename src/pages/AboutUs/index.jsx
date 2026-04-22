@@ -3,20 +3,38 @@ import { Target, Telescope, Scale } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
-const team = [
-  { name: 'Ahmad Suryadi', role: 'Chief Executive Officer', initials: 'AS' },
-  { name: 'Dewi Rahayu', role: 'Chief Investment Officer', initials: 'DR' },
-  { name: 'Budi Santoso', role: 'Head of Portfolio Management', initials: 'BS' },
-  { name: 'Siti Nurhaliza', role: 'Head of Risk Management', initials: 'SN' },
+const leaders = [
+  {
+    name: 'Ikna Abdul Kholik',
+    role: 'Chief Executive Officer',
+    initials: 'IK',
+    bio: [
+      'Ikna Abdul Kholik is the founder and CEO of Summa Capital, with over 18 years of experience in asset management and Indonesia\'s capital markets.',
+      'Before founding Summa Capital, he held senior positions at several leading financial institutions. Under his leadership, Summa Capital has successfully managed assets worth over IDR 2 Trillion.',
+      'Ikna holds a degree in Economics from the University of Indonesia and an MBA from INSEAD, France.',
+    ],
+    socials: ['LinkedIn', 'Twitter'],
+  },
+  {
+    name: 'John Doe',
+    role: 'Stakeholder & Strategic Partner',
+    initials: 'JD',
+    bio: [
+      'John Doe is the strategic partner and principal shareholder of Summa Capital, bringing a global perspective to the development of cross-asset investment portfolios.',
+      'With an extensive track record in the Asia-Pacific capital markets, John plays a key role in expanding Summa Capital\'s institutional network at the international level.',
+      'John holds a Finance degree from the London School of Economics and holds a CFA (Chartered Financial Analyst) designation.',
+    ],
+    socials: ['LinkedIn'],
+  },
 ]
 
 const milestones = [
-  { year: '2008', event: 'Summa Capital didirikan di Jakarta' },
-  { year: '2012', event: 'Mendapat lisensi resmi OJK sebagai Manajer Investasi' },
-  { year: '2016', event: 'Aset Under Management melampaui Rp 500 Miliar' },
-  { year: '2019', event: 'Peluncuran platform digital Lelang Aset' },
-  { year: '2022', event: 'Ekspansi ke 5 kota besar di Indonesia' },
-  { year: '2024', event: 'AUM mencapai lebih dari Rp 2 Triliun' },
+  { year: '2008', event: 'Summa Capital founded in Jakarta' },
+  { year: '2012', event: 'Obtained official OJK license as an Investment Manager' },
+  { year: '2016', event: 'Assets Under Management surpassed IDR 500 Billion' },
+  { year: '2019', event: 'Launched the digital Asset Auction platform' },
+  { year: '2022', event: 'Expanded to 5 major cities across Indonesia' },
+  { year: '2024', event: 'AUM reached over IDR 2 Trillion' },
 ]
 
 export default function AboutUs() {
@@ -26,10 +44,10 @@ export default function AboutUs() {
       <section className="page-hero">
         <div className="page-hero__bg" />
         <div className="container page-hero__content">
-          <span className="section-badge">Tentang Kami</span>
-          <h1 className="page-hero__title">Membangun Kepercayaan<br /><span className="text-gold">Sejak 2008</span></h1>
+          <span className="section-badge">About Us</span>
+          <h1 className="page-hero__title">Building Trust<br /><span className="text-gold">Since 2008</span></h1>
           <p className="page-hero__desc">
-            Summa Capital adalah perusahaan manajemen aset terkemuka yang berdedikasi menghadirkan solusi investasi terbaik bagi klien institusional dan individual.
+            Summa Capital is a leading asset management company dedicated to delivering the best investment solutions for institutional and individual clients.
           </p>
         </div>
       </section>
@@ -39,23 +57,23 @@ export default function AboutUs() {
         <div className="container mv-grid">
           <div className="mv-card mv-card--gold">
             <Target className="mv-card__icon" size={32} />
-            <h3 className="mv-card__title">Misi</h3>
+            <h3 className="mv-card__title">Mission</h3>
             <p className="mv-card__text">
-              Memberikan solusi manajemen aset yang transparan, profesional, dan menguntungkan untuk memaksimalkan nilai investasi klien dengan integritas tertinggi.
+              To provide transparent, professional, and profitable asset management solutions that maximize client investment value with the highest integrity.
             </p>
           </div>
           <div className="mv-card">
             <Telescope className="mv-card__icon" size={32} />
-            <h3 className="mv-card__title">Visi</h3>
+            <h3 className="mv-card__title">Vision</h3>
             <p className="mv-card__text">
-              Menjadi perusahaan manajemen aset terdepan di Asia Tenggara yang dikenal atas keunggulan, inovasi, dan kepercayaan klien.
+              To become the leading asset management company in Southeast Asia, recognized for excellence, innovation, and client trust.
             </p>
           </div>
           <div className="mv-card">
             <Scale className="mv-card__icon" size={32} />
-            <h3 className="mv-card__title">Nilai</h3>
+            <h3 className="mv-card__title">Values</h3>
             <p className="mv-card__text">
-              Integritas, Transparansi, Inovasi, dan Pertumbuhan Berkelanjutan menjadi fondasi setiap keputusan dan tindakan kami.
+              Integrity, Transparency, Innovation, and Sustainable Growth form the foundation of every decision and action we take.
             </p>
           </div>
         </div>
@@ -65,13 +83,13 @@ export default function AboutUs() {
       <section className="section bg-light">
         <div className="container story-grid">
           <div className="story__text">
-            <span className="section-badge">Cerita Kami</span>
-            <h2 className="section-title">Perjalanan <span className="text-gold">Summa Capital</span></h2>
+            <span className="section-badge">Our Story</span>
+            <h2 className="section-title">The Journey of <span className="text-gold">Summa Capital</span></h2>
             <p style={{ color: '#6A6A6A', lineHeight: 1.75, marginBottom: '1rem' }}>
-              Berawal dari visi sederhana untuk menghadirkan pengelolaan aset berkelas institusi bagi semua kalangan investor, Summa Capital hadir sebagai jembatan antara peluang investasi berkualitas dan kepercayaan klien.
+              Starting from a simple vision to bring institutional-grade asset management to all investor segments, Summa Capital serves as the bridge between quality investment opportunities and client trust.
             </p>
             <p style={{ color: '#6A6A6A', lineHeight: 1.75 }}>
-              Dengan tim profesional berpengalaman dan teknologi terkini, kami telah berhasil mengelola lebih dari Rp 2 Triliun aset dan melayani ratusan klien dari berbagai latar belakang.
+              With an experienced professional team and cutting-edge technology, we have successfully managed over IDR 2 Trillion in assets and served hundreds of clients from diverse backgrounds.
             </p>
           </div>
           <div className="timeline">
@@ -86,20 +104,28 @@ export default function AboutUs() {
         </div>
       </section>
 
-      {/* ── Team ── */}
+      {/* ── Leadership ── */}
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">Tim Kami</span>
-            <h2 className="section-title">Para <span className="text-gold">Profesional</span> di Balik Layar</h2>
-            <p className="section-desc">Tim kami terdiri dari para ahli keuangan, investasi, dan manajemen risiko berpengalaman.</p>
+            <span className="section-badge">Leadership</span>
+            <h2 className="section-title">The <span className="text-gold">Leaders</span> of Summa Capital</h2>
+            <p className="section-desc">Led by experienced individuals with a proven track record in the national and international financial industry.</p>
           </div>
-          <div className="team-grid">
-            {team.map((t) => (
-              <div key={t.name} className="team-card">
-                <div className="team-card__avatar">{t.initials}</div>
-                <h4 className="team-card__name">{t.name}</h4>
-                <p className="team-card__role">{t.role}</p>
+          <div className="leaders-grid">
+            {leaders.map((l) => (
+              <div key={l.name} className="leader-card">
+                <div className="leader-card__photo-col">
+                  <div className="leader-avatar">{l.initials}</div>
+                  <div className="leader-role-badge">{l.role}</div>
+                </div>
+                <div className="leader-card__info-col">
+                  <h3 className="leader-name">{l.name}</h3>
+                  <div className="leader-divider" />
+                  {l.bio.map((p, i) => (
+                    <p key={i} className="leader-bio">{p}</p>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -109,9 +135,9 @@ export default function AboutUs() {
       {/* ── CTA ── */}
       <section className="page-cta">
         <div className="container page-cta__inner">
-          <h2 className="page-cta__title">Ingin Berkolaborasi?</h2>
-          <p className="page-cta__desc">Hubungi tim kami untuk diskusi lebih lanjut tentang kebutuhan investasi Anda.</p>
-          <Link to="/contact" className="btn btn--white">Hubungi Kami</Link>
+          <h2 className="page-cta__title">Want to Collaborate?</h2>
+          <p className="page-cta__desc">Contact our team for further discussion about your investment needs.</p>
+          <Link to="/contact" className="btn btn--white">Contact Us</Link>
         </div>
       </section>
     </div>

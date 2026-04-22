@@ -3,18 +3,18 @@ import { Image as ImageIcon, ZoomIn } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
-const categories = ['Semua', 'Properti', 'Event', 'Tim', 'Portofolio']
+const categories = ['All', 'Property', 'Event', 'Team', 'Portfolio']
 
 const items = [
-  { id: 1, cat: 'Properti', title: 'Gedung Komersial Jakarta', desc: 'Aset premium di kawasan bisnis Jakarta Selatan', size: 'large' },
-  { id: 2, cat: 'Event', title: 'Investment Summit 2024', desc: 'Forum investasi tahunan Summa Capital' },
-  { id: 3, cat: 'Properti', title: 'Mixed-Use Development Surabaya', desc: 'Proyek pengembangan kawasan terpadu' },
-  { id: 4, cat: 'Tim', title: 'Annual Meeting 2025', desc: 'Pertemuan tahunan tim manajemen Summa Capital', size: 'large' },
-  { id: 5, cat: 'Event', title: 'Client Appreciation Night', desc: 'Malam apresiasi untuk klien setia Summa Capital' },
-  { id: 6, cat: 'Portofolio', title: 'Eco Resort Lombok', desc: 'Properti hospitality premium di Lombok' },
-  { id: 7, cat: 'Properti', title: 'Kawasan Industri Bekasi', desc: 'Lahan industri strategis di koridor timur Jakarta' },
-  { id: 8, cat: 'Tim', title: 'Office Culture', desc: 'Budaya kerja profesional tim Summa Capital' },
-  { id: 9, cat: 'Portofolio', title: 'Data Center Jakarta Barat', desc: 'Investasi properti teknologi masa depan' },
+  { id: 1, cat: 'Property', title: 'Commercial Building Jakarta', desc: 'Premium asset in the South Jakarta business district', size: 'large' },
+  { id: 2, cat: 'Event', title: 'Investment Summit 2024', desc: 'Summa Capital annual investment forum' },
+  { id: 3, cat: 'Property', title: 'Mixed-Use Development Surabaya', desc: 'Integrated township development project' },
+  { id: 4, cat: 'Team', title: 'Annual Meeting 2025', desc: 'Summa Capital annual management team gathering', size: 'large' },
+  { id: 5, cat: 'Event', title: 'Client Appreciation Night', desc: 'A night to celebrate our loyal Summa Capital clients' },
+  { id: 6, cat: 'Portfolio', title: 'Eco Resort Lombok', desc: 'Premium hospitality property in Lombok' },
+  { id: 7, cat: 'Property', title: 'Bekasi Industrial Estate', desc: 'Strategic industrial land on the east Jakarta corridor' },
+  { id: 8, cat: 'Team', title: 'Office Culture', desc: 'Professional work culture of the Summa Capital team' },
+  { id: 9, cat: 'Portfolio', title: 'Data Center West Jakarta', desc: 'Future-ready technology property investment' },
 ]
 
 const colors = [
@@ -40,9 +40,9 @@ export default function Gallery() {
       <section className="page-hero">
         <div className="page-hero__bg" />
         <div className="container page-hero__content">
-          <span className="section-badge">Galeri</span>
-          <h1 className="page-hero__title">Jejak Langkah<br /><span className="text-gold">Summa Capital</span></h1>
-          <p className="page-hero__desc">Kumpulan momen, aset, dan pencapaian Summa Capital dalam satu galeri eksklusif.</p>
+          <span className="section-badge">Gallery</span>
+          <h1 className="page-hero__title">Our Journey &amp; Milestones<br /><span className="text-gold">at Summa Capital</span></h1>
+          <p className="page-hero__desc">A curated collection of moments, assets, and achievements by Summa Capital.</p>
         </div>
       </section>
 
@@ -93,7 +93,7 @@ export default function Gallery() {
           {filtered.length === 0 && (
             <div className="empty-state">
               <ImageIcon className="empty-state__icon" size={48} />
-              <p>Tidak ada item dalam kategori ini.</p>
+              <p>No items found in this category.</p>
             </div>
           )}
         </div>

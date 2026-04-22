@@ -4,83 +4,77 @@ import { Send, ArrowLeft, Bot, User, Sparkles, RefreshCw } from "lucide-react";
 import "./style.css";
 
 const SUMMA_INFO = {
-  name: "Konsultan Summa",
+  name: "Summa Consultant",
   greeting:
-    "Halo! Saya adalah konsultan AI Summa Capital. Saya siap membantu Anda dengan pertanyaan seputar investasi, aset lelang, early access, dan layanan kami. Apa yang ingin Anda ketahui?",
+    "Hello! I'm Summa Capital's AI consultant. I'm here to help you with questions about investing, asset auctions, early access, and our services. What would you like to know?",
 };
 
 const QUICK_QUESTIONS = [
-  "Bagaimana cara mulai berinvestasi?",
-  "Apa itu Early Access Summa Capital?",
-  "Berapa minimum investasi?",
-  "Bagaimana proses lelang aset?",
-  "Apa saja jenis aset yang tersedia?",
-  "Berapa proyeksi return investasi?",
+  "How do I start investing?",
+  "What is Summa Capital Early Access?",
+  "What is the minimum investment?",
+  "How does the asset auction process work?",
+  "What types of assets are available?",
+  "What is the projected investment return?",
 ];
 
 // Keyword-based AI response engine
 function generateResponse(text) {
   const q = text.toLowerCase();
 
-  if (/(halo|hai|hi|hello|selamat|pagi|siang|malam)/.test(q)) {
-    return `Halo! Selamat datang di Summa Capital. Saya di sini untuk membantu Anda menemukan peluang investasi terbaik. Apakah Anda tertarik dengan **lelang aset**, **early access**, atau ingin mengetahui lebih lanjut tentang layanan kami?`;
+  if (/(hello|hi|hey|good morning|good afternoon|good evening)/.test(q)) {
+    return "Hello! Welcome to Summa Capital. I'm here to help you find the best investment opportunities. Are you interested in **asset auctions**, **early access**, or would you like to learn more about our services?";
   }
 
-  if (/(mulai|cara|langkah|daftar|registrasi|sign up|bergabung)/.test(q)) {
-    return `Memulai investasi di Summa Capital sangat mudah:\n\n1. **Daftar akun** — kunjungi halaman registrasi dan lengkapi data diri Anda\n2. **Verifikasi identitas** — proses KYC (Know Your Customer) aman dan cepat, biasanya selesai dalam 1×24 jam\n3. **Pilih aset** — jelajahi daftar aset tersedia di menu Asset kami\n4. **Mulai investasi** — tempatkan penawaran atau daftar early access sesuai profil risiko Anda\n\nTim konsultan kami juga siap mendampingi Anda secara personal. Ingin saya hubungkan Anda dengan tim kami?`;
+  if (/(start|how to|steps|register|sign up|join|get started)/.test(q)) {
+    return "Getting started with Summa Capital is simple:\n\n1. **Create an account** — visit our registration page and complete your profile\n2. **Identity verification** — our secure KYC (Know Your Customer) process is fast, typically completed within 24 hours\n3. **Browse assets** — explore the full list of available assets in our Asset menu\n4. **Start investing** — place a bid or register for early access based on your risk profile\n\nOur consultants are also ready to guide you personally. Would you like me to connect you with our team?";
   }
 
-  if (/(early access|eksklusif|akses awal|vip)/.test(q)) {
-    return `**Program Early Access** adalah layanan eksklusif Summa Capital yang memberikan:\n\n• 🔐 **Akses sebelum publik** — dapatkan informasi aset pilihan sebelum dibuka ke pasar umum\n• 💎 **Harga lebih kompetitif** — syarat investasi yang lebih menguntungkan\n• 📊 **Laporan mendalam** — due diligence dan laporan valuasi komprehensif\n• 👤 **Konsultasi pribadi** — akses langsung ke konsultan investasi senior kami\n\nProgram ini cocok untuk investor yang ingin memaksimalkan keuntungan dengan informasi lebih awal. Apakah Anda tertarik mendaftar?`;
+  if (/(early access|exclusive|vip|pre-market)/.test(q)) {
+    return "The **Early Access Program** is Summa Capital's exclusive service that provides:\n\n• 🔐 **Pre-market access** — receive information on selected assets before they open to the general public\n• 💎 **Exclusive pricing** — more competitive pricing and investment terms\n• 📊 **In-depth reports** — comprehensive due diligence and valuation reports\n• 👤 **Personal consultation** — direct access to our senior investment consultants\n\nThis program is ideal for investors who want to maximize returns with earlier information. Are you interested in signing up?";
   }
 
-  if (/(minimum|minimal|modal awal|berapa modal|berapa dana)/.test(q)) {
-    return `Minimum investasi di Summa Capital bervariasi tergantung jenis aset:\n\n• **Lelang Aset** — mulai dari Rp 500 juta (tergantung aset yang dilelang)\n• **Early Access** — mulai dari Rp 1 miliar untuk klien terseleksi\n• **Manajemen Portofolio** — mulai dari Rp 2 miliar untuk pengelolaan portofolio penuh\n\nKami percaya kualitas lebih penting dari kuantitas investor. Setiap investasi dikelola dengan standar institusional tertinggi. Ingin tahu lebih lanjut tentang salah satu produk?`;
+  if (/(minimum|minimum investment|starting capital|how much|initial capital)/.test(q)) {
+    return "Minimum investment at Summa Capital varies by asset type:\n\n• **Asset Auction** — starting from IDR 500 million (depending on the asset being auctioned)\n• **Early Access** — starting from IDR 1 billion for selected clients\n• **Portfolio Management** — starting from IDR 2 billion for full portfolio management\n\nWe believe quality matters more than investor quantity. Every investment is managed to the highest institutional standards. Would you like to know more about any of these products?";
   }
 
-  if (/(lelang|auction|bid|penawaran|ikut lelang)/.test(q)) {
-    return `**Proses Lelang Aset** di Summa Capital berlangsung transparan dan terstruktur:\n\n1. **Pra-Lelang** — publikasi detail aset, laporan valuasi, dan jadwal open house\n2. **Due Diligence** — investor dapat melakukan pemeriksaan mandiri atas aset\n3. **Penawaran** — peserta terdaftar memasukkan penawaran dalam sistem tertutup\n4. **Penetapan Pemenang** — penawaran tertinggi yang memenuhi syarat ditetapkan sebagai pemenang\n5. **Serah Terima** — proses legalisasi dan transfer kepemilikan difasilitasi penuh oleh Summa Capital\n\nSemua proses diawasi oleh OJK dan notaris independen. Apakah ada aset lelang tertentu yang Anda minati?`;
+  if (/(auction|bid|bidding)/.test(q)) {
+    return "The **Asset Auction Process** at Summa Capital is transparent and structured:\n\n1. **Pre-Auction** — publication of asset details, valuation reports, and open house schedule\n2. **Due Diligence** — investors may independently inspect the asset\n3. **Bidding** — registered participants submit bids through our closed system\n4. **Winner Selection** — the highest qualifying bid is declared the winner\n5. **Handover** — the legalization and ownership transfer process is fully facilitated by Summa Capital\n\nAll processes are overseen by OJK and an independent notary. Is there a specific auction asset you're interested in?";
   }
 
-  if (
-    /(jenis aset|tipe aset|apa saja aset|kategori|properti|tanah|gedung)/.test(
-      q,
-    )
-  ) {
-    return `Summa Capital mengelola berbagai jenis aset premium:\n\n🏢 **Properti Komersial** — gedung perkantoran, ruko, pusat perbelanjaan\n🏠 **Properti Residensial** — apartemen, superblok, perumahan mewah\n🏨 **Properti Hospitality** — hotel, resort, vila\n🏭 **Properti Industri** — kawasan industri, gudang logistik, pabrik\n💻 **Properti Teknologi** — data center, infrastruktur digital\n🌿 **Agribisnis** — perkebunan, pertanian terintegrasi\n\nSetiap aset telah melalui proses seleksi ketat dan due diligence menyeluruh oleh tim analis kami. Kategori mana yang paling Anda minati?`;
+  if (/(types of asset|asset types|what assets|categories|property|land|building)/.test(q)) {
+    return "Summa Capital manages a wide range of premium assets:\n\n🏢 **Commercial Property** — office buildings, shophouses, shopping centers\n🏠 **Residential Property** — apartments, superblocks, luxury housing\n🏨 **Hospitality Property** — hotels, resorts, villas\n🏭 **Industrial Property** — industrial estates, logistics warehouses, factories\n💻 **Technology Property** — data centers, digital infrastructure\n🌿 **Agribusiness** — plantations, integrated farming\n\nEvery asset undergoes a rigorous selection and thorough due diligence process by our analyst team. Which category interests you most?";
   }
 
-  if (
-    /(return|imbal hasil|keuntungan|profit|yield|roi|hasil investasi)/.test(q)
-  ) {
-    return `Proyeksi return investasi di Summa Capital kompetitif dan berbasis riset:\n\n| Jenis Aset | Proyeksi Return ||\n|---|---|---|\n| Properti Komersial | 10–16% p.a. |\n| Properti Residensial | 13–18% p.a. |\n| Properti Hospitality | 15–24% p.a. |\n| Properti Industri | 10–14% p.a. |\n| Data Center | 16–22% p.a. |\n\n⚠️ *Catatan: Return bersifat proyeksi berdasarkan riset pasar. Investasi mengandung risiko. Kinerja masa lalu tidak menjamin hasil masa depan.*\n\nIngin kami bantu identifikasi aset yang sesuai profil risiko Anda?`;
+  if (/(return|yield|profit|roi|projected return|investment return)/.test(q)) {
+    return "Projected returns at Summa Capital are competitive and research-based:\n\n| Asset Type | Projected Return |\n|---|---|\n| Commercial Property | 10–16% p.a. |\n| Residential Property | 13–18% p.a. |\n| Hospitality Property | 15–24% p.a. |\n| Industrial Property | 10–14% p.a. |\n| Data Center | 16–22% p.a. |\n\n⚠️ *Note: Returns are projections based on market research. Investing involves risk. Past performance does not guarantee future results.*\n\nWould you like us to help identify an asset that matches your risk profile?";
   }
 
-  if (/(ojk|izin|legal|regulasi|aman|terpercaya|lisensi)/.test(q)) {
-    return `Summa Capital beroperasi penuh di bawah pengawasan **Otoritas Jasa Keuangan (OJK)** Republik Indonesia.\n\n✅ Terdaftar sebagai Manajer Investasi resmi sejak 2012\n✅ Laporan keuangan diaudit oleh auditor independen Big Four\n✅ Seluruh transaksi difasilitasi notaris bersertifikat\n✅ Sistem keamanan data berstandar ISO 27001\n✅ Dana klien disimpan di rekening terpisah (segregated account)\n\nKami berkomitmen pada transparansi dan integritas dalam setiap transaksi. Ada pertanyaan spesifik tentang aspek legal kami?`;
+  if (/(ojk|license|legal|regulation|safe|trusted|regulated)/.test(q)) {
+    return "Summa Capital operates fully under the supervision of the **Financial Services Authority (OJK)** of Indonesia.\n\n✅ Registered as an official Investment Manager since 2012\n✅ Financial statements audited by a Big Four independent auditor\n✅ All transactions facilitated by certified notaries\n✅ Data security system compliant with ISO 27001\n✅ Client funds held in segregated accounts\n\nWe are committed to transparency and integrity in every transaction. Any specific questions about our legal standing?";
   }
 
-  if (/(risiko|risk|kerugian|aman|berapa risiko)/.test(q)) {
-    return `Setiap investasi memiliki risiko, dan kami selalu transparan tentang hal ini:\n\n**Risiko yang dikelola oleh Summa Capital:**\n• 📊 Risiko pasar — dimitigasi dengan diversifikasi portofolio\n• 🏗️ Risiko konstruksi — hanya aset existing dengan track record yang diterima\n• ⚖️ Risiko hukum — seluruh aset clear & clean secara legalitas\n• 💧 Risiko likuiditas — ada mekanisme exit yang terstruktur\n\n**Langkah mitigasi kami:**\n• Due diligence mendalam sebelum setiap listing aset\n• Asuransi aset komprehensif\n• Tim risk management berpengalaman 15+ tahun\n\nKami sarankan untuk tidak menginvestasikan lebih dari 30% kekayaan bersih dalam satu kelas aset. Apakah Anda ingin diskusi lebih lanjut tentang strategi diversifikasi?`;
+  if (/(risk|risks|loss|how risky)/.test(q)) {
+    return "Every investment carries risk, and we are always transparent about this:\n\n**Risks managed by Summa Capital:**\n• 📊 Market risk — mitigated through portfolio diversification\n• 🏗️ Construction risk — only existing assets with a proven track record are accepted\n• ⚖️ Legal risk — all assets are fully cleared and clean in terms of legality\n• 💧 Liquidity risk — a structured exit mechanism is available\n\n**Our mitigation steps:**\n• In-depth due diligence before every asset listing\n• Comprehensive asset insurance\n• Risk management team with 15+ years of experience\n\nWe recommend not investing more than 30% of your net worth in a single asset class. Would you like to discuss diversification strategies further?";
   }
 
-  if (/(kontak|hubungi|telepon|email|alamat|kantor|tim)/.test(q)) {
-    return `Anda dapat menghubungi tim Summa Capital melalui:\n\n📍 **Alamat:** Jl. Jenderal Sudirman No. 28, Karet Semanggi, Jakarta Selatan 12920\n📞 **Telepon:** +62 21 5790 0000\n✉️ **Email:** info@summacapital.co.id\n🕐 **Jam Operasional:** Senin–Jumat, 08:00–17:00 WIB\n\nAtau kunjungi halaman **Hubungi Kami** di website kami untuk mengirim pesan langsung. Tim kami merespons dalam 1×24 jam kerja.\n\nApakah ada hal lain yang bisa saya bantu?`;
+  if (/(contact|reach|phone|email|address|office|team)/.test(q)) {
+    return "You can reach the Summa Capital team at:\n\n📍 **Address:** Jl. Jenderal Sudirman No. 28, Karet Semanggi, South Jakarta 12920\n📞 **Phone:** +62 21 5790 0000\n✉️ **Email:** info@summacapital.co.id\n🕐 **Office Hours:** Monday–Friday, 08:00–17:00 WIB\n\nOr visit the **Contact Us** page on our website to send a message directly. Our team responds within 24 business hours.\n\nIs there anything else I can help you with?";
   }
 
-  if (/(terima kasih|makasih|thanks|thank you)/.test(q)) {
-    return `Terima kasih telah menghubungi Summa Capital! 🙏\n\nJika sewaktu-waktu Anda memiliki pertanyaan lain, jangan ragu untuk kembali ke sini. Tim konsultan kami juga siap membantu Anda secara langsung di kantor kami.\n\nSemoga investasi Anda bersama Summa Capital membawa hasil terbaik! 💎`;
+  if (/(thank you|thanks|cheers|appreciate)/.test(q)) {
+    return "Thank you for reaching out to Summa Capital! 🙏\n\nIf you have more questions at any time, don't hesitate to come back. Our consultants are also ready to help you in person at our office.\n\nWe hope your investment journey with Summa Capital brings outstanding results! 💎";
   }
 
-  if (/(portofolio|manajemen portofolio|kelola)/.test(q)) {
-    return `Layanan **Manajemen Portofolio** Summa Capital dirancang untuk investor yang ingin pengelolaan aset secara profesional dan menyeluruh:\n\n📈 **Strategi Investasi Personal** — disesuaikan dengan tujuan keuangan dan profil risiko Anda\n🔍 **Riset & Analisis Mendalam** — tim analis kami memantau pasar 24/7\n📋 **Laporan Berkala** — laporan bulanan dan kuartalan yang transparan\n🤝 **Dedicated Relationship Manager** — satu konsultan khusus untuk Anda\n⚡ **Rebalancing Aktif** — portofolio disesuaikan dengan kondisi pasar\n\nMinimum AUM untuk layanan ini adalah Rp 2 miliar. Apakah Anda tertarik mengetahui lebih detail?`;
+  if (/(portfolio|portfolio management|manage)/.test(q)) {
+    return "Summa Capital's **Portfolio Management** service is designed for investors seeking comprehensive and professional asset management:\n\n📈 **Personal Investment Strategy** — tailored to your financial goals and risk profile\n🔍 **In-Depth Research & Analysis** — our analyst team monitors the market around the clock\n📋 **Regular Reports** — transparent monthly and quarterly reports\n🤝 **Dedicated Relationship Manager** — one dedicated consultant just for you\n⚡ **Active Rebalancing** — portfolio adjusted to market conditions\n\nMinimum AUM for this service is IDR 2 billion. Would you like more details?";
   }
 
   // Default response
   const defaults = [
-    `Pertanyaan yang menarik! Untuk memberikan informasi yang paling relevan, boleh saya tanyakan — apakah Anda sudah pernah berinvestasi di properti sebelumnya? Ini akan membantu saya memberikan rekomendasi yang lebih tepat untuk Anda.`,
-    `Terima kasih atas pertanyaannya. Tim spesialis Summa Capital kami dapat memberikan jawaban yang lebih detail untuk pertanyaan tersebut. Apakah Anda ingin saya jadwalkan sesi konsultasi dengan salah satu konsultan senior kami?\n\nAtau, Anda juga bisa langsung menghubungi kami di:\n📞 +62 21 5790 0000\n✉️ info@summacapital.co.id`,
-    `Saya mengerti ketertarikan Anda. Untuk pertanyaan yang lebih spesifik, saya merekomendasikan sesi konsultasi langsung dengan tim analis kami yang berpengalaman. Namun sementara itu, apakah ada topik umum tentang investasi atau layanan Summa Capital yang bisa saya jelaskan?`,
+    "Great question! To provide the most relevant information, may I ask — have you invested in property before? This will help me give you a more tailored recommendation.",
+    "Thank you for your question. Our Summa Capital specialists can give a more detailed answer to that. Would you like me to schedule a consultation session with one of our senior consultants?\n\nYou can also contact us directly:\n📞 +62 21 5790 0000\n✉️ info@summacapital.co.id",
+    "I understand your interest. For more specific questions, I recommend a direct consultation session with our experienced analyst team. In the meantime, is there a general topic about investing or Summa Capital's services I can explain?",
   ];
   return defaults[Math.floor(Math.random() * defaults.length)];
 }
@@ -148,7 +142,7 @@ export default function Consultation() {
   };
 
   const fmtTime = (d) =>
-    d.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+    d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 
   return (
     <div className="consult-root">
@@ -156,7 +150,7 @@ export default function Consultation() {
       <aside className="consult-sidebar">
         <div className="consult-sidebar__top">
           <Link to="/" className="consult-back">
-            <ArrowLeft size={18} /> Kembali
+            <ArrowLeft size={18} /> Back
           </Link>
           <div className="consult-brand">
             <div className="consult-brand__logo">
@@ -182,13 +176,13 @@ export default function Consultation() {
             </div>
           </div>
           <p className="consult-ai-desc">
-            Konsultan AI kami siap menjawab pertanyaan seputar investasi, aset,
-            return, proses lelang, dan semua layanan Summa Capital.
+            Our AI consultant is ready to answer questions about investing, assets,
+            returns, the auction process, and all Summa Capital services.
           </p>
         </div>
 
         <div className="consult-sidebar__topics">
-          <div className="topics-label">Pertanyaan Umum</div>
+          <div className="topics-label">Frequently Asked</div>
           {QUICK_QUESTIONS.map((q) => (
             <button
               key={q}
@@ -201,9 +195,9 @@ export default function Consultation() {
         </div>
 
         <div className="consult-sidebar__footer">
-          <p>Butuh konsultasi lebih lanjut?</p>
+          <p>Need further consultation?</p>
           <Link to="/contact" className="consult-contact-btn">
-            Hubungi Tim Kami
+            Contact Our Team
           </Link>
         </div>
       </aside>
@@ -219,14 +213,14 @@ export default function Consultation() {
             <div>
               <div className="chat-header__name">{SUMMA_INFO.name}</div>
               <div className="chat-header__status">
-                <span className="status-dot" /> Siap membantu
+                <span className="status-dot" /> Ready to help
               </div>
             </div>
           </div>
           <button
             className="chat-reset-btn"
             onClick={resetChat}
-            title="Reset percakapan"
+            title="Reset conversation"
           >
             <RefreshCw size={16} /> Reset
           </button>
@@ -289,7 +283,7 @@ export default function Consultation() {
             <textarea
               ref={inputRef}
               className="chat-input"
-              placeholder="Tulis pertanyaan Anda tentang investasi Summa Capital..."
+              placeholder="Type your question about Summa Capital investments..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKey}
@@ -300,14 +294,13 @@ export default function Consultation() {
               className="chat-send-btn"
               onClick={() => sendMessage()}
               disabled={!input.trim() || typing}
-              aria-label="Kirim"
+              aria-label="Send"
             >
               <Send size={18} />
             </button>
           </div>
           <div className="chat-disclaimer">
-            <Sparkles size={12} /> Respons dihasilkan oleh AI. Untuk keputusan
-            investasi, selalu konsultasikan dengan tim profesional kami.
+            <Sparkles size={12} /> Responses are AI-generated. For investment decisions, always consult with our professional team.
           </div>
         </div>
       </main>

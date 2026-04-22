@@ -46,10 +46,10 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <nav className="navbar__links">
           <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
-            Beranda
+            Home
           </NavLink>
           <NavLink to="/about-us" className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
-            Tentang Kami
+            About Us
           </NavLink>
 
           {/* Dropdown */}
@@ -65,36 +65,36 @@ export default function Navbar() {
               <NavLink to="/asset/bid" className="nav-dropdown__item" onClick={() => setAssetOpen(false)}>
                 <span className="nav-dropdown__item-icon">⚖</span>
                 <span>
-                  <strong>Lelang</strong>
-                  <small>Ikut penawaran aset</small>
+                  <strong>Auction</strong>
+                  <small>Participate in asset bidding</small>
                 </span>
               </NavLink>
               <NavLink to="/asset/early-access" className="nav-dropdown__item" onClick={() => setAssetOpen(false)}>
                 <span className="nav-dropdown__item-icon">✦</span>
                 <span>
                   <strong>Early Access</strong>
-                  <small>Akses eksklusif awal</small>
+                  <small>Exclusive early access</small>
                 </span>
               </NavLink>
               <NavLink to="/asset/sebaran" className="nav-dropdown__item" onClick={() => setAssetOpen(false)}>
                 <span className="nav-dropdown__item-icon">◎</span>
                 <span>
-                  <strong>Sebaran Aset</strong>
-                  <small>Peta lokasi aset</small>
+                  <strong>Asset Distribution</strong>
+                  <small>Asset location map</small>
                 </span>
               </NavLink>
             </div>
           </div>
 
           <NavLink to="/contact" className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
-            Hubungi Kami
+            Contact Us
           </NavLink>
           <NavLink to="/gallery" className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
-            Galeri
+            Gallery
           </NavLink>
         </nav>
 
-        <Link to="/consultation" className="navbar__cta">Konsultasi Gratis</Link>
+        <Link to="/consultation" className="navbar__cta">Free Consultation</Link>
 
         {/* Hamburger */}
         <button
@@ -108,23 +108,23 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div className={`navbar__mobile${mobileOpen ? ' navbar__mobile--open' : ''}`}>
-        <NavLink to="/" end className="mobile-link" onClick={closeMobile}>Beranda</NavLink>
-        <NavLink to="/about-us" className="mobile-link" onClick={closeMobile}>Tentang Kami</NavLink>
+        <NavLink to="/" end className="mobile-link" onClick={closeMobile}>Home</NavLink>
+        <NavLink to="/about-us" className="mobile-link" onClick={closeMobile}>About Us</NavLink>
 
         <button className="mobile-link mobile-link--group" onClick={() => setAssetOpen(v => !v)}>
           Asset <span className="nav-dropdown__caret">{assetOpen ? '▴' : '▾'}</span>
         </button>
         {assetOpen && (
           <div className="mobile-submenu">
-            <NavLink to="/asset/bid" className="mobile-link mobile-link--sub" onClick={closeMobile}>Lelang</NavLink>
+            <NavLink to="/asset/bid" className="mobile-link mobile-link--sub" onClick={closeMobile}>Auction</NavLink>
             <NavLink to="/asset/early-access" className="mobile-link mobile-link--sub" onClick={closeMobile}>Early Access</NavLink>
-            <NavLink to="/asset/sebaran" className="mobile-link mobile-link--sub" onClick={closeMobile}>Sebaran Aset</NavLink>
+            <NavLink to="/asset/sebaran" className="mobile-link mobile-link--sub" onClick={closeMobile}>Asset Distribution</NavLink>
           </div>
         )}
 
-        <NavLink to="/contact" className="mobile-link" onClick={closeMobile}>Hubungi Kami</NavLink>
-        <NavLink to="/gallery" className="mobile-link" onClick={closeMobile}>Galeri</NavLink>
-        <Link to="/consultation" className="mobile-cta" onClick={closeMobile}>Konsultasi Gratis</Link>
+        <NavLink to="/contact" className="mobile-link" onClick={closeMobile}>Contact Us</NavLink>
+        <NavLink to="/gallery" className="mobile-link" onClick={closeMobile}>Gallery</NavLink>
+        <Link to="/consultation" className="mobile-cta" onClick={closeMobile}>Free Consultation</Link>
       </div>
     </header>
   )

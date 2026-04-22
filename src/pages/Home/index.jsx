@@ -11,56 +11,56 @@ import {
 import "./style.css";
 
 const stats = [
-  { value: "Rp 2T+", label: "Aset Dikelola" },
-  { value: "500+", label: "Klien Terpercaya" },
-  { value: "15+", label: "Tahun Pengalaman" },
-  { value: "98%", label: "Tingkat Kepuasan" },
+  { value: 'IDR 2T+', label: 'Assets Managed' },
+  { value: '500+', label: 'Trusted Clients' },
+  { value: '15+', label: 'Years of Experience' },
+  { value: '98%', label: 'Satisfaction Rate' },
 ];
 
 const services = [
   {
     icon: Scale,
-    title: "Lelang Aset",
-    desc: "Platform lelang aset premium dengan proses transparan, aman, dan terpercaya untuk investor profesional.",
-    link: "/asset/bid",
-    cta: "Lihat Lelang",
+    title: 'Asset Auction',
+    desc: 'A premium asset auction platform with a transparent, secure, and trusted process for professional investors.',
+    link: '/asset/bid',
+    cta: 'View Auctions',
   },
   {
     icon: Sparkles,
-    title: "Early Access",
-    desc: "Dapatkan akses eksklusif ke aset pilihan sebelum dipublikasikan ke pasar umum.",
-    link: "/asset/early-access",
-    cta: "Daftar Sekarang",
+    title: 'Early Access',
+    desc: 'Get exclusive access to selected assets before they are released to the general market.',
+    link: '/asset/early-access',
+    cta: 'Register Now',
   },
   {
     icon: Briefcase,
-    title: "Manajemen Portofolio",
-    desc: "Pengelolaan portofolio terstruktur dengan strategi berbasis data dan riset mendalam.",
-    link: "/about-us",
-    cta: "Pelajari Lebih",
+    title: 'Portfolio Management',
+    desc: 'Structured portfolio management with data-driven strategies and in-depth research.',
+    link: '/about-us',
+    cta: 'Learn More',
   },
 ];
 
 const why = [
   {
     icon: Shield,
-    title: "Terpercaya & Teregulasi",
-    desc: "Terdaftar dan diawasi oleh OJK dengan standar compliance tertinggi.",
+    title: 'Trusted & Regulated',
+    desc: 'Registered and supervised by OJK with the highest compliance standards.',
   },
   {
     icon: BarChart3,
-    title: "Berbasis Data",
-    desc: "Keputusan investasi didukung riset kuantitatif dan analisis pasar mendalam.",
+    title: 'Data-Driven',
+    desc: 'Investment decisions supported by quantitative research and in-depth market analysis.',
   },
   {
     icon: Handshake,
-    title: "Mitra Jangka Panjang",
-    desc: "Kami tumbuh bersama klien. Keberhasilan Anda adalah keberhasilan kami.",
+    title: 'Long-Term Partner',
+    desc: 'We grow together with our clients. Your success is our success.',
   },
   {
     icon: Lock,
-    title: "Keamanan Aset",
-    desc: "Sistem keamanan berlapis memastikan aset dan data klien terlindungi.",
+    title: 'Asset Security',
+    desc: 'Multi-layered security systems ensure client assets and data are fully protected.',
   },
 ];
 
@@ -117,13 +117,12 @@ export default function Home() {
       <section className="section services">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">Layanan Kami</span>
+            <span className="section-badge">Our Services</span>
             <h2 className="section-title">
-              Solusi Investasi <span className="text-gold">Lengkap</span>
+              Complete <span className="text-gold">Investment Solutions</span>
             </h2>
             <p className="section-desc">
-              Kami menyediakan berbagai instrumen dan layanan pengelolaan aset
-              untuk memenuhi kebutuhan investasi Anda.
+              We provide a range of asset management instruments and services to meet your investment needs.
             </p>
           </div>
           <div className="services__grid">
@@ -145,23 +144,21 @@ export default function Home() {
       <section className="section why">
         <div className="container why__inner">
           <div className="why__left">
-            <span className="section-badge">Mengapa Summa Capital</span>
+            <span className="section-badge">Why Summa Capital</span>
             <h2 className="section-title">
-              Pondasi Kuat
+              A Strong Foundation
               <br />
-              <span className="text-gold">Untuk Masa Depan</span>
+              <span className="text-gold">For the Future</span>
             </h2>
             <p className="section-desc">
-              Selama lebih dari satu dekade, Summa Capital telah menjadi pilihan
-              utama investor institusional dan individu dalam mengelola aset
-              secara profesional.
+              For over a decade, Summa Capital has been the preferred choice of institutional and individual investors for professional asset management.
             </p>
             <Link
               to="/about-us"
               className="btn btn--gold"
               style={{ marginTop: "1.5rem" }}
             >
-              Kenali Kami
+              Get to Know Us
             </Link>
           </div>
           <div className="why__right">
@@ -183,19 +180,18 @@ export default function Home() {
         <div className="container cta-banner__inner">
           <div>
             <h2 className="cta-banner__title">
-              Siap Memulai Perjalanan Investasi Anda?
+              Ready to Start Your Investment Journey?
             </h2>
             <p className="cta-banner__desc">
-              Konsultasikan kebutuhan investasi Anda dengan tim ahli kami hari
-              ini.
+              Consult your investment needs with our expert team today.
             </p>
           </div>
           <div className="cta-banner__actions">
             <Link to="/contact" className="btn btn--white">
-              Hubungi Kami
+              Contact Us
             </Link>
             <Link to="/asset/bid" className="btn btn--outline-white">
-              Lihat Aset
+              View Assets
             </Link>
           </div>
         </div>

@@ -3,28 +3,28 @@ import '../PageShared.css'
 import './style.css'
 
 const bids = [
-  { id: 1, title: 'Gedung Komersial Jakarta Selatan', type: 'Properti Komersial', opening: 'Rp 15.000.000.000', estimate: 'Rp 18.000.000.000', deadline: '30 Mei 2026', status: 'Aktif', badge: 'Populer', image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=500&h=300&fit=crop' },
-  { id: 2, title: 'Kawasan Industri Bekasi', type: 'Lahan Industri', opening: 'Rp 8.500.000.000', estimate: 'Rp 11.000.000.000', deadline: '15 Jun 2026', status: 'Aktif', badge: 'Baru', image: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=500&h=300&fit=crop' },
-  { id: 3, title: 'Ruko Premium BSD City', type: 'Properti Ritel', opening: 'Rp 3.200.000.000', estimate: 'Rp 4.000.000.000', deadline: '20 Jun 2026', status: 'Aktif', badge: '', image: 'https://images.unsplash.com/photo-1570129477492-45a003537e1f?w=500&h=300&fit=crop' },
-  { id: 4, title: 'Apartemen Mewah Sudirman', type: 'Properti Residensial', opening: 'Rp 5.700.000.000', estimate: 'Rp 6.500.000.000', deadline: '5 Jul 2026', status: 'Akan Datang', badge: '', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=300&fit=crop' },
-  { id: 5, title: 'Hotel Bintang 4 Bali', type: 'Properti Hospitality', opening: 'Rp 45.000.000.000', estimate: 'Rp 52.000.000.000', deadline: '25 Jul 2026', status: 'Akan Datang', badge: 'Premium', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=300&fit=crop' },
-  { id: 6, title: 'Gudang Logistik Tangerang', type: 'Properti Industri', opening: 'Rp 12.000.000.000', estimate: 'Rp 15.000.000.000', deadline: '10 Agt 2026', status: 'Akan Datang', badge: '', image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=500&h=300&fit=crop' },
+  { id: 1, title: 'Commercial Building South Jakarta', type: 'Commercial Property', opening: 'IDR 15,000,000,000', estimate: 'IDR 18,000,000,000', deadline: 'May 30, 2026', status: 'Active', badge: 'Popular', image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=500&h=300&fit=crop' },
+  { id: 2, title: 'Bekasi Industrial Estate', type: 'Industrial Land', opening: 'IDR 8,500,000,000', estimate: 'IDR 11,000,000,000', deadline: 'Jun 15, 2026', status: 'Active', badge: 'New', image: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=500&h=300&fit=crop' },
+  { id: 3, title: 'Premium Shophouse BSD City', type: 'Retail Property', opening: 'IDR 3,200,000,000', estimate: 'IDR 4,000,000,000', deadline: 'Jun 20, 2026', status: 'Active', badge: '', image: 'https://images.unsplash.com/photo-1570129477492-45a003537e1f?w=500&h=300&fit=crop' },
+  { id: 4, title: 'Luxury Apartment Sudirman', type: 'Residential Property', opening: 'IDR 5,700,000,000', estimate: 'IDR 6,500,000,000', deadline: 'Jul 5, 2026', status: 'Upcoming', badge: '', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=300&fit=crop' },
+  { id: 5, title: '4-Star Hotel Bali', type: 'Hospitality Property', opening: 'IDR 45,000,000,000', estimate: 'IDR 52,000,000,000', deadline: 'Jul 25, 2026', status: 'Upcoming', badge: 'Premium', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=300&fit=crop' },
+  { id: 6, title: 'Logistics Warehouse Tangerang', type: 'Industrial Property', opening: 'IDR 12,000,000,000', estimate: 'IDR 15,000,000,000', deadline: 'Aug 10, 2026', status: 'Upcoming', badge: '', image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=500&h=300&fit=crop' },
 ]
 
-const categories = ['Semua', 'Properti Komersial', 'Lahan Industri', 'Properti Ritel', 'Properti Residensial', 'Properti Hospitality', 'Properti Industri']
+const categories = ['All', 'Commercial Property', 'Industrial Land', 'Retail Property', 'Residential Property', 'Hospitality Property', 'Industrial Property']
 
 export default function AssetBid() {
-  const [filter, setFilter] = useState('Semua')
-  const filtered = filter === 'Semua' ? bids : bids.filter(b => b.type === filter)
+  const [filter, setFilter] = useState('All')
+  const filtered = filter === 'All' ? bids : bids.filter(b => b.type === filter)
 
   return (
     <div className="page">
       <section className="page-hero">
         <div className="page-hero__bg" />
         <div className="container page-hero__content">
-          <span className="section-badge">Lelang Aset</span>
-          <h1 className="page-hero__title">Ikuti Penawaran<br /><span className="text-gold">Aset Berkualitas</span></h1>
-          <p className="page-hero__desc">Temukan dan ikuti lelang aset premium pilihan Summa Capital dengan proses transparan dan terpercaya.</p>
+          <span className="section-badge">Asset Auction</span>
+          <h1 className="page-hero__title">Bid on<br /><span className="text-gold">Quality Assets</span></h1>
+          <p className="page-hero__desc">Discover and participate in premium asset auctions selected by Summa Capital — transparent and fully trusted.</p>
         </div>
       </section>
 
@@ -33,17 +33,17 @@ export default function AssetBid() {
         <div className="container bid-info-bar__inner">
           <div className="bid-info-item">
             <span className="bid-info-item__value">6</span>
-            <span className="bid-info-item__label">Aset Tersedia</span>
+            <span className="bid-info-item__label">Assets Available</span>
           </div>
           <div className="bid-divider" />
           <div className="bid-info-item">
             <span className="bid-info-item__value">3</span>
-            <span className="bid-info-item__label">Lelang Aktif</span>
+            <span className="bid-info-item__label">Active Auctions</span>
           </div>
           <div className="bid-divider" />
           <div className="bid-info-item">
-            <span className="bid-info-item__value">Rp 89M+</span>
-            <span className="bid-info-item__label">Total Estimasi Nilai</span>
+            <span className="bid-info-item__value">IDR 89M+</span>
+            <span className="bid-info-item__label">Total Estimated Value</span>
           </div>
           <div className="bid-divider" />
           <div className="bid-info-item">
@@ -81,25 +81,26 @@ export default function AssetBid() {
                 <h3 className="bid-card__title">{item.title}</h3>
                 <div className="bid-card__prices">
                   <div className="bid-card__price-row">
-                    <span className="bid-card__price-label">Harga Pembukaan</span>
+                    <span className="bid-card__price-label">Opening Price</span>
                     <span className="bid-card__price-value">{item.opening}</span>
                   </div>
                   <div className="bid-card__price-row">
-                    <span className="bid-card__price-label">Estimasi Nilai</span>
+                    <span className="bid-card__price-label">Estimated Value</span>
                     <span className="bid-card__price-value bid-card__price-value--gold">{item.estimate}</span>
                   </div>
                 </div>
                 <div className="bid-card__footer">
                   <div className="bid-card__deadline">
                     <span className="bid-card__deadline-icon">📅</span>
-                    <span>Batas: {item.deadline}</span>
+                    <span>Deadline: {item.deadline}</span>
                   </div>
-                  <span className={`bid-card__status bid-card__status--${item.status === 'Aktif' ? 'active' : 'upcoming'}`}>
+                  <span className={`bid-card__status bid-card__status--${item.status === 'Active' ? 'active' : 'upcoming'}`}>
                     {item.status}
                   </span>
                 </div>
-                <button className={`bid-card__cta${item.status === 'Aktif' ? '' : ' bid-card__cta--disabled'}`} disabled={item.status !== 'Aktif'}>
-                  {item.status === 'Aktif' ? 'Ikuti Lelang' : 'Segera Hadir'}
+                <button
+                className={`bid-card__cta${item.status === 'Active' ? '' : ' bid-card__cta--disabled'}`} disabled={item.status !== 'Active'}>
+                  {item.status === 'Active' ? 'Place Bid' : 'Coming Soon'}
                 </button>
               </div>
             ))}
@@ -108,7 +109,7 @@ export default function AssetBid() {
           {filtered.length === 0 && (
             <div className="empty-state">
               <div className="empty-state__icon">🔍</div>
-              <p>Tidak ada aset dalam kategori ini saat ini.</p>
+              <p>No assets found in this category.</p>
             </div>
           )}
         </div>
@@ -118,15 +119,15 @@ export default function AssetBid() {
       <section className="section bg-light">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">Proses Lelang</span>
-            <h2 className="section-title">Cara <span className="text-gold">Mengikuti Lelang</span></h2>
+            <span className="section-badge">Auction Process</span>
+            <h2 className="section-title">How to <span className="text-gold">Participate in an Auction</span></h2>
           </div>
           <div className="steps-grid">
             {[
-              { num: '01', title: 'Registrasi', desc: 'Daftarkan diri Anda dan lengkapi proses verifikasi identitas.' },
-              { num: '02', title: 'Pilih Aset', desc: 'Telusuri dan pilih aset yang sesuai kebutuhan investasi Anda.' },
-              { num: '03', title: 'Ajukan Penawaran', desc: 'Masukkan nominal penawaran Anda sesuai ketentuan lelang.' },
-              { num: '04', title: 'Selesaikan Transaksi', desc: 'Pemenang lelang akan dihubungi untuk proses penyelesaian.' },
+              { num: '01', title: 'Register', desc: 'Sign up and complete the identity verification process.' },
+              { num: '02', title: 'Choose an Asset', desc: 'Browse and select an asset that matches your investment needs.' },
+              { num: '03', title: 'Submit a Bid', desc: 'Enter your bid amount in accordance with the auction terms.' },
+              { num: '04', title: 'Complete the Transaction', desc: 'The auction winner will be contacted to finalize the transaction.' },
             ].map(step => (
               <div key={step.num} className="step-card">
                 <div className="step-card__num">{step.num}</div>
