@@ -189,5 +189,7 @@
 
 @media (max-width: 480px) {
   .perks-grid { grid-template-columns: 1fr; }
-  .ea-card__meta { grid-template-columns: 1fr; }
+  .ea-card__meta { grid-template-columns: 1fr 1fr; }
+  .ea-card { padding: 1.5rem; }
+  .perk-card { padding: 1.5rem 1rem; }
 }

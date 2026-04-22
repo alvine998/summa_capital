@@ -207,6 +207,9 @@ export default function Consultation() {
         {/* Chat Header */}
         <div className="chat-header">
           <div className="chat-header__info">
+            <Link to="/" className="chat-back-mobile" aria-label="Back">
+              <ArrowLeft size={20} />
+            </Link>
             <div className="chat-header__avatar">
               <Bot size={20} />
             </div>

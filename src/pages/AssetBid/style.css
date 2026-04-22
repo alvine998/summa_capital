@@ -137,10 +137,13 @@
   overflow: hidden;
   background: linear-gradient(135deg, #FAFAFA 0%, #F0F0F0 100%);
   position: relative;
-  margin: 0.5rem -0.75rem 0;
-  margin-left: calc(-1.75rem);
-  margin-right: calc(-1.75rem);
+  /* margin: 0.5rem -0.75rem 0; */
+  /* margin-left: calc(-1.75rem);
+  margin-right: calc(-1.75rem); */
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bid-card__image-img {
@@ -298,4 +301,11 @@
   .steps-grid { grid-template-columns: 1fr; }
   .bid-info-bar__inner { gap: 1rem; }
   .bid-divider { display: none; }
+}
+
+@media (max-width: 480px) {
+  .bid-card { padding: 1.25rem; }
+  .bid-filters { gap: 0.35rem; }
+  .bid-filter { padding: 0.4rem 0.75rem; font-size: 0.75rem; }
+  .step-card { padding: 1.5rem 1rem; }
 }

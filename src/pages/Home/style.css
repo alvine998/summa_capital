@@ -296,10 +296,20 @@
   .services__grid { grid-template-columns: 1fr; }
   .why__inner { grid-template-columns: 1fr; gap: 2rem; }
   .cta-banner__inner { flex-direction: column; text-align: center; }
+  .cta-banner__actions { justify-content: center; }
 }
 
 @media (max-width: 480px) {
   .stats__grid { grid-template-columns: 1fr 1fr; }
+  .stat-card { padding: 1.5rem 1rem; }
+  .stat-card__value { font-size: 1.75rem; }
+  .hero__content { padding-top: 90px; padding-bottom: 60px; }
+  .hero__desc { font-size: 0.95rem; }
   .hero__actions { flex-direction: column; }
+  .hero__actions .btn { width: 100%; text-align: center; }
+  .cta-banner { padding: 3.5rem 0; }
+  .cta-banner__title { font-size: 1.4rem; }
   .cta-banner__actions { flex-direction: column; width: 100%; }
+  .cta-banner__actions .btn { width: 100%; text-align: center; }
+  .service-card { padding: 1.75rem 1.5rem; }
 }

@@ -215,6 +215,11 @@
 }
 
 @media (max-width: 480px) {
-  .leader-card__info-col { padding: 1.75rem; }
-  .leader-name { font-size: 1.2rem; }
+  .leader-card__info-col { padding: 1.5rem; }
+  .leader-card__photo-col { padding: 1.25rem 1.5rem; gap: 1rem; }
+  .leader-avatar { width: 64px; height: 64px; font-size: 1.3rem; }
+  .leader-name { font-size: 1.15rem; }
+  .mv-card { padding: 1.5rem; }
+  .timeline__item { grid-template-columns: 48px 16px 1fr; }
+  .timeline::before { left: 48px; }
 }

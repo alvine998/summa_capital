@@ -517,9 +517,33 @@
 }
 
 /* ── Responsive ── */
+
+/* Mobile back button (hidden on desktop) */
+.chat-back-mobile {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #F5F5F5;
+  border: 1px solid #E8E8E8;
+  color: #1A1A1A;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.chat-back-mobile:hover {
+  background: #EBEBEB;
+}
+
 @media (max-width: 768px) {
   .consult-sidebar {
     display: none;
+  }
+  .chat-back-mobile {
+    display: flex;
   }
 }
 
@@ -536,9 +560,19 @@
     overflow-x: auto;
     flex-wrap: nowrap;
     padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .chat-quick-pills::-webkit-scrollbar {
+    display: none;
   }
 
   .chat-input-wrap {
     padding: 10px 14px 12px;
+  }
+
+  .chat-header {
+    padding: 12px 14px;
   }
 }

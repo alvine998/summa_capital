@@ -143,9 +143,12 @@
 
 @media (max-width: 900px) {
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .footer__top { padding: 3.5rem 0 2.5rem; }
 }
 
 @media (max-width: 480px) {
   .footer__grid { grid-template-columns: 1fr; }
   .footer__bottom-inner { flex-direction: column; text-align: center; }
+  .footer__top { padding: 2.5rem 0 2rem; }
+  .footer__brand-desc { max-width: 100%; }
 }

@@ -333,8 +333,13 @@
     align-items: flex-start;
   }
 
+  .sebaran-hero__title {
+    font-size: 1rem;
+  }
+
   .sebaran-hero__desc {
     white-space: normal;
+    font-size: 0.8rem;
   }
 
   .sebaran-legend {
@@ -344,5 +349,9 @@
 
   .asset-panel {
     width: 100%;
+  }
+
+  .asset-panel__image-wrap {
+    height: 180px;
   }
 }

@@ -222,3 +222,10 @@
   .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
   .form-row { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 480px) {
+  .contact-form-card { padding: 1.5rem; border-radius: 14px; }
+  .contact-form__title { font-size: 1.2rem; }
+  .contact-info__title { font-size: 1.25rem; }
+  .map-placeholder { height: 140px; }
+}

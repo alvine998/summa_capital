@@ -182,7 +182,16 @@
   min-height: 100vh;
 }
 
+@media (max-width: 768px) {
+  .page-cta { padding: 4rem 0; }
+  .page-cta__title { font-size: 1.5rem; }
+}
+
 @media (max-width: 480px) {
-  .section { padding: 4rem 0; }
-  .page-hero { padding: 120px 0 60px; }
+  .container { padding: 0 1rem; }
+  .section { padding: 3.5rem 0; }
+  .page-hero { padding: 110px 0 50px; }
+  .page-cta { padding: 3rem 0; }
+  .page-cta__title { font-size: 1.3rem; }
+  .btn { padding: 0.7rem 1.25rem; font-size: 0.85rem; }
 }
