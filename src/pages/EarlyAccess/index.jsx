@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Lock, Gem, BarChart3, Briefcase } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
@@ -50,10 +51,10 @@ const assets = [
 ]
 
 const perks = [
-  { icon: '🔐', title: 'Akses Sebelum Publik', desc: 'Dapatkan informasi aset pilihan sebelum dibuka ke pasar umum.' },
-  { icon: '💎', title: 'Harga Eksklusif', desc: 'Nikmati harga dan syarat investasi yang lebih kompetitif.' },
-  { icon: '📊', title: 'Laporan Mendalam', desc: 'Akses due diligence dan laporan valuasi komprehensif.' },
-  { icon: '🧑‍💼', title: 'Konsultasi Pribadi', desc: 'Akses langsung ke konsultan investasi senior kami.' },
+  { icon: Lock, title: 'Akses Sebelum Publik', desc: 'Dapatkan informasi aset pilihan sebelum dibuka ke pasar umum.' },
+  { icon: Gem, title: 'Harga Eksklusif', desc: 'Nikmati harga dan syarat investasi yang lebih kompetitif.' },
+  { icon: BarChart3, title: 'Laporan Mendalam', desc: 'Akses due diligence dan laporan valuasi komprehensif.' },
+  { icon: Briefcase, title: 'Konsultasi Pribadi', desc: 'Akses langsung ke konsultan investasi senior kami.' },
 ]
 
 export default function EarlyAccess() {
@@ -78,7 +79,7 @@ export default function EarlyAccess() {
           <div className="perks-grid">
             {perks.map(p => (
               <div key={p.title} className="perk-card">
-                <div className="perk-card__icon">{p.icon}</div>
+                <p.icon className="perk-card__icon" size={32} />
                 <h4 className="perk-card__title">{p.title}</h4>
                 <p className="perk-card__desc">{p.desc}</p>
               </div>

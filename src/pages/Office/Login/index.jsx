@@ -1,52 +1,62 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import './style.css'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./style.css";
 
 export default function Login() {
-  const navigate = useNavigate()
-  const [form, setForm] = useState({ email: '', password: '', rememberMe: false })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleChange = e => {
-    const { name, value, type, checked } = e.target
-    setForm(f => ({
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((f) => ({
       ...f,
-      [name]: type === 'checkbox' ? checked : value
-    }))
-    setError('')
-  }
+      [name]: type === "checkbox" ? checked : value,
+    }));
+    setError("");
+  };
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Basic validation
       if (!form.email || !form.password) {
-        setError('Email dan password harus diisi')
-        setLoading(false)
-        return
+        setError("Email dan password harus diisi");
+        setLoading(false);
+        return;
       }
 
       // Simulate successful login
-      localStorage.setItem('summacapital_token', 'mock-jwt-token-' + Date.now())
-      localStorage.setItem('summacapital_user', JSON.stringify({
-        email: form.email,
-        name: form.email.split('@')[0]
-      }))
+      localStorage.setItem(
+        "summacapital_token",
+        "mock-jwt-token-" + Date.now(),
+      );
+      localStorage.setItem(
+        "summacapital_user",
+        JSON.stringify({
+          email: form.email,
+          name: form.email.split("@")[0],
+        }),
+      );
 
-      navigate('/office/dashboard')
+      navigate("/office/dashboard");
     } catch (err) {
-      setError('Terjadi kesalahan. Coba lagi.')
+      setError("Terjadi kesalahan. Coba lagi.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="login-container">
@@ -56,7 +66,11 @@ export default function Login() {
         {/* Left - Branding */}
         <div className="login-brand">
           <div className="login-logo">
-            <span className="login-logo-icon">SC</span>
+            <img
+              src="/images/logo.png"
+              alt="Summa Capital Logo"
+              className="login-logo-icon"
+            />
           </div>
           <h1 className="login-title">Summa Capital</h1>
           <p className="login-subtitle">CMS Dashboard</p>
@@ -69,7 +83,9 @@ export default function Login() {
         <div className="login-form-wrap">
           <div className="login-form-card">
             <h2 className="login-form-title">Masuk ke Dashboard</h2>
-            <p className="login-form-desc">Gunakan kredensial Anda untuk akses</p>
+            <p className="login-form-desc">
+              Gunakan kredensial Anda untuk akses
+            </p>
 
             {error && <div className="login-error">{error}</div>}
 
@@ -113,11 +129,13 @@ export default function Login() {
                   />
                   <span>Ingat saya</span>
                 </label>
-                <a href="#forgot" className="form-link">Lupa password?</a>
+                <a href="/office/forgot-password" className="form-link">
+                  Lupa password?
+                </a>
               </div>
 
               <button type="submit" className="login-btn" disabled={loading}>
-                {loading ? 'Memproses...' : 'Masuk'}
+                {loading ? "Memproses..." : "Masuk"}
               </button>
             </form>
 
@@ -128,5 +146,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }

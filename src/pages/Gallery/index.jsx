@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Image as ImageIcon, ZoomIn } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
@@ -82,7 +83,7 @@ export default function Gallery() {
                     <p className="gallery-card__desc">{item.desc}</p>
                   </div>
                   <div className="gallery-card__overlay">
-                    <span className="gallery-card__zoom">⊕</span>
+                    <ZoomIn size={24} />
                   </div>
                 </div>
               )
@@ -91,7 +92,7 @@ export default function Gallery() {
 
           {filtered.length === 0 && (
             <div className="empty-state">
-              <div className="empty-state__icon">🖼</div>
+              <ImageIcon className="empty-state__icon" size={48} />
               <p>Tidak ada item dalam kategori ini.</p>
             </div>
           )}

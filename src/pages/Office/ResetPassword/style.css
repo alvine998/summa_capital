@@ -1,26 +1,26 @@
-/* Login Page */
-.login-container {
+/* Reset Password Page */
+.reset-container {
   min-height: 100vh;
   display: flex;
   position: relative;
   overflow: hidden;
 }
 
-.login-bg {
+.reset-bg {
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 50%, #1A1A1A 100%);
   z-index: 0;
 }
 
-.login-bg::before {
+.reset-bg::before {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at 60% 50%, rgba(201, 168, 76, 0.1) 0%, transparent 60%);
 }
 
-.login-bg::after {
+.reset-bg::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -30,7 +30,7 @@
   background-size: 80px 80px;
 }
 
-.login-content {
+.reset-content {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -41,7 +41,7 @@
 }
 
 /* Branding Side */
-.login-brand {
+.reset-brand {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,27 +50,26 @@
   color: #FFFFFF;
 }
 
-.login-logo {
-  width: 100px;
-  height: 100px;
+.reset-logo {
+  width: 64px;
+  height: 64px;
   background: linear-gradient(135deg, #C9A84C, #A8843D);
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   box-shadow: 0 4px 16px rgba(201, 168, 76, 0.4);
 }
 
-.login-logo-icon {
+.reset-logo-icon {
   font-size: 1.35rem;
   font-weight: 800;
   color: #FFFFFF;
   letter-spacing: 0.05em;
-  border-radius: 14px;
 }
 
-.login-title {
+.reset-title {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 0.25rem;
@@ -78,14 +77,14 @@
   color: #FFFFFF;
 }
 
-.login-subtitle {
+.reset-subtitle {
   font-size: 1.1rem;
   color: #C9A84C;
   margin-bottom: 1.5rem;
   font-weight: 500;
 }
 
-.login-description {
+.reset-description {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.7;
@@ -93,7 +92,7 @@
 }
 
 /* Form Side */
-.login-form-wrap {
+.reset-form-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,7 +101,7 @@
   backdrop-filter: blur(10px);
 }
 
-.login-form-card {
+.reset-form-card {
   width: 100%;
   max-width: 420px;
   background: #FFFFFF;
@@ -111,21 +110,21 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-.login-form-title {
+.reset-form-title {
   font-size: 1.5rem;
   font-weight: 800;
   color: #1A1A1A;
   margin-bottom: 0.35rem;
 }
 
-.login-form-desc {
+.reset-form-desc {
   font-size: 0.9rem;
   color: #9A9A9A;
   margin-bottom: 1.75rem;
 }
 
 /* Error message */
-.login-error {
+.reset-error {
   padding: 0.85rem 1rem;
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
@@ -138,13 +137,13 @@
   gap: 0.5rem;
 }
 
-.login-error::before {
+.reset-error::before {
   content: '⚠';
   font-size: 1rem;
 }
 
 /* Form styles */
-.login-form {
+.reset-form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -191,52 +190,44 @@
   color: #B8B8B8;
 }
 
-/* Checkbox */
-.checkbox {
+/* Password wrapper */
+.password-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+}
+
+.password-wrapper .form-input {
+  flex: 1;
+  padding-right: 2.5rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
   cursor: pointer;
-  font-size: 0.875rem;
-  color: #4A4A4A;
-  user-select: none;
-}
-
-.checkbox input {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  accent-color: #C9A84C;
-}
-
-.checkbox input:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Form row - checkbox + forgot */
-.form-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0.5rem;
-}
-
-.form-link {
-  font-size: 0.8rem;
-  color: #C9A84C;
-  text-decoration: none;
-  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  color: #9A9A9A;
   transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.form-link:hover {
-  color: #A8843D;
-  text-decoration: underline;
+.toggle-password:hover:not(:disabled) {
+  color: #4A4A4A;
 }
 
-/* Login button */
-.login-btn {
+.toggle-password:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Submit button */
+.reset-btn {
   padding: 0.95rem 1.5rem;
   background: linear-gradient(135deg, #C9A84C, #A8843D);
   color: #FFFFFF;
@@ -250,56 +241,112 @@
   box-shadow: 0 3px 12px rgba(201, 168, 76, 0.35);
 }
 
-.login-btn:hover:not(:disabled) {
+.reset-btn:hover:not(:disabled) {
   box-shadow: 0 6px 20px rgba(201, 168, 76, 0.5);
   transform: translateY(-2px);
 }
 
-.login-btn:disabled {
+.reset-btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
 }
 
 /* Footer */
-.login-footer {
+.reset-footer {
   text-align: center;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid #E8E8E8;
 }
 
-.login-footer p {
-  font-size: 0.75rem;
+.reset-footer p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.back-link {
+  color: #C9A84C;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #A8843D;
+  text-decoration: underline;
+}
+
+/* Success State */
+.success-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.success-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1A1A1A;
+  margin-bottom: 0.75rem;
+}
+
+.success-message {
+  font-size: 0.9rem;
   color: #9A9A9A;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.success-redirect {
+  font-size: 0.85rem;
+  color: #C9A84C;
+  font-weight: 500;
 }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .login-content {
+  .reset-content {
     grid-template-columns: 1fr;
   }
 
-  .login-brand {
+  .reset-brand {
     display: none;
   }
 
-  .login-form-wrap {
+  .reset-form-wrap {
     min-height: 100vh;
     padding: 1.5rem;
   }
 
-  .login-form-card {
+  .reset-form-card {
     max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .login-form-card {
+  .reset-form-card {
     padding: 1.75rem;
   }
 
-  .login-form-title {
+  .reset-form-title {
     font-size: 1.2rem;
   }
 

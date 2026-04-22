@@ -76,6 +76,13 @@ export default function Navbar() {
                   <small>Akses eksklusif awal</small>
                 </span>
               </NavLink>
+              <NavLink to="/asset/sebaran" className="nav-dropdown__item" onClick={() => setAssetOpen(false)}>
+                <span className="nav-dropdown__item-icon">◎</span>
+                <span>
+                  <strong>Sebaran Aset</strong>
+                  <small>Peta lokasi aset</small>
+                </span>
+              </NavLink>
             </div>
           </div>
 
@@ -87,7 +94,7 @@ export default function Navbar() {
           </NavLink>
         </nav>
 
-        <Link to="/contact" className="navbar__cta">Konsultasi Gratis</Link>
+        <Link to="/consultation" className="navbar__cta">Konsultasi Gratis</Link>
 
         {/* Hamburger */}
         <button
@@ -111,12 +118,13 @@ export default function Navbar() {
           <div className="mobile-submenu">
             <NavLink to="/asset/bid" className="mobile-link mobile-link--sub" onClick={closeMobile}>Lelang</NavLink>
             <NavLink to="/asset/early-access" className="mobile-link mobile-link--sub" onClick={closeMobile}>Early Access</NavLink>
+            <NavLink to="/asset/sebaran" className="mobile-link mobile-link--sub" onClick={closeMobile}>Sebaran Aset</NavLink>
           </div>
         )}
 
         <NavLink to="/contact" className="mobile-link" onClick={closeMobile}>Hubungi Kami</NavLink>
         <NavLink to="/gallery" className="mobile-link" onClick={closeMobile}>Galeri</NavLink>
-        <Link to="/contact" className="mobile-cta" onClick={closeMobile}>Konsultasi Gratis</Link>
+        <Link to="/consultation" className="mobile-cta" onClick={closeMobile}>Konsultasi Gratis</Link>
       </div>
     </header>
   )

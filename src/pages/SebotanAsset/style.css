@@ -1,0 +1,348 @@
+/* ── Sebaran Asset Page ── */
+
+.sebaran-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Hero Bar */
+.sebaran-hero {
+  background: #1A1A1A;
+  border-bottom: 1px solid #2A2A2A;
+  padding: 16px 32px;
+  padding-top: calc(76px + 16px); /* account for fixed navbar */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sebaran-hero__content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sebaran-hero__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.sebaran-hero__desc {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Legend */
+.sebaran-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #BBB;
+  white-space: nowrap;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Map + Panel Container */
+.sebaran-body {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Leaflet Map */
+.sebaran-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Override leaflet z-index so panel sits above */
+.sebaran-map .leaflet-pane {
+  z-index: 1;
+}
+.sebaran-map .leaflet-control-container {
+  z-index: 5;
+}
+
+/* Custom Marker */
+.custom-marker {
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.custom-marker:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.custom-marker svg {
+  transform: rotate(45deg);
+}
+
+/* ── Sliding Asset Panel ── */
+.asset-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100%;
+  background: #FFFFFF;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.18);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 20;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-panel--open {
+  transform: translateX(0);
+}
+
+/* Close Button */
+.asset-panel__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 5;
+  transition: background 0.2s;
+}
+
+.asset-panel__close:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* Image */
+.asset-panel__image-wrap {
+  position: relative;
+  height: 220px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.asset-panel__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.asset-panel__status-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Panel Body */
+.asset-panel__body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.asset-panel__type {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #C9A84C;
+}
+
+.asset-panel__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1A1A1A;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.asset-panel__location {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: #777;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.asset-panel__location svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #C9A84C;
+}
+
+.asset-panel__desc {
+  font-size: 0.87rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Stats Grid */
+.asset-panel__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid #EBEBEB;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #EBEBEB;
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-row svg {
+  color: #C9A84C;
+  flex-shrink: 0;
+}
+
+.stat-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.stat-value.gold {
+  color: #C9A84C;
+}
+
+/* CTA Button */
+.asset-panel__cta {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #C9A84C, #A8843D);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.asset-panel__cta:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Scrollbar in panel */
+.asset-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.asset-panel::-webkit-scrollbar-track {
+  background: #F5F5F5;
+}
+.asset-panel::-webkit-scrollbar-thumb {
+  background: #C9A84C;
+  border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .sebaran-hero {
+    padding-top: calc(60px + 12px);
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sebaran-hero__content {
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sebaran-hero__desc {
+    white-space: normal;
+  }
+
+  .sebaran-legend {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .asset-panel {
+    width: 100%;
+  }
+}

@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import { MapPin, Phone, Mail, Clock, Map, CheckCircle } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
 const contacts = [
-  { icon: '📍', label: 'Alamat', value: 'Jl. Jenderal Sudirman No. 28, Karet Semanggi, Jakarta Selatan 12920' },
-  { icon: '📞', label: 'Telepon', value: '+62 21 5790 0000' },
-  { icon: '✉️', label: 'Email', value: 'info@summacapital.co.id' },
-  { icon: '🕐', label: 'Jam Operasional', value: 'Senin – Jumat, 08:00 – 17:00 WIB' },
+  { icon: MapPin, label: 'Alamat', value: 'Jl. Jenderal Sudirman No. 28, Karet Semanggi, Jakarta Selatan 12920' },
+  { icon: Phone, label: 'Telepon', value: '+62 21 5790 0000' },
+  { icon: Mail, label: 'Email', value: 'info@summacapital.co.id' },
+  { icon: Clock, label: 'Jam Operasional', value: 'Senin – Jumat, 08:00 – 17:00 WIB' },
 ]
 
 export default function Contact() {
@@ -40,7 +41,7 @@ export default function Contact() {
             <div className="contact-items">
               {contacts.map(c => (
                 <div key={c.label} className="contact-item">
-                  <div className="contact-item__icon">{c.icon}</div>
+                  <div className="contact-item__icon"><c.icon size={24} /></div>
                   <div>
                     <div className="contact-item__label">{c.label}</div>
                     <div className="contact-item__value">{c.value}</div>
@@ -61,7 +62,7 @@ export default function Contact() {
             {/* Map placeholder */}
             <div className="map-placeholder">
               <div className="map-placeholder__inner">
-                <span className="map-placeholder__icon">🗺</span>
+                <Map size={32} />
                 <span>Jl. Jenderal Sudirman, Jakarta</span>
               </div>
             </div>
@@ -72,7 +73,7 @@ export default function Contact() {
             <div className="contact-form-card">
               {submitted ? (
                 <div className="form-success">
-                  <div className="form-success__icon">✓</div>
+                  <CheckCircle className="form-success__icon" size={48} />
                   <h3 className="form-success__title">Pesan Terkirim!</h3>
                   <p className="form-success__desc">Terima kasih telah menghubungi kami. Tim kami akan merespons dalam 1×24 jam.</p>
                   <button className="btn btn--gold" style={{ marginTop: '1.5rem' }} onClick={() => setSubmitted(false)}>

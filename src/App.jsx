@@ -1,36 +1,69 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import OfficeLayout from './components/Office/OfficeLayout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import AssetBid from './pages/AssetBid'
 import EarlyAccess from './pages/EarlyAccess'
 import Contact from './pages/Contact'
 import Gallery from './pages/Gallery'
+import SebotanAsset from './pages/SebotanAsset'
+import Consultation from './pages/Consultation'
 import Login from './pages/Office/Login'
+import ForgotPassword from './pages/Office/ForgotPassword'
+import ResetPassword from './pages/Office/ResetPassword'
 import Dashboard from './pages/Office/Dashboard'
+import Asset from './pages/Office/Asset'
+import CreateAsset from './pages/Office/Asset/Create'
+import EditAsset from './pages/Office/Asset/Edit'
+import Galeri from './pages/Office/Galeri'
+import Pengguna from './pages/Office/Pengguna'
+import Pengaturan from './pages/Office/Pengaturan'
 import './App.css'
 
 function AppContent() {
   const location = useLocation()
-  const isOffice = location.pathname.includes('/office')
+  const isOfficeAuth = location.pathname.includes('/office') && 
+                       !location.pathname.includes('/office/login') &&
+                       !location.pathname.includes('/office/forgot-password') &&
+                       !location.pathname.includes('/office/reset-password')
+  const isOfficeNoAuth = location.pathname.includes('/office/login') ||
+                         location.pathname.includes('/office/forgot-password') ||
+                         location.pathname.includes('/office/reset-password') ||
+                         location.pathname === '/consultation'
 
   return (
     <>
-      {!isOffice && <Navbar />}
+      {!isOfficeNoAuth && !isOfficeAuth && <Navbar />}
       <main>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/asset/bid" element={<AssetBid />} />
           <Route path="/asset/early-access" element={<EarlyAccess />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/asset/sebaran" element={<SebotanAsset />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/consultation" element={<Consultation />} />
+
+          {/* Office Auth Routes (No Sidebar) */}
           <Route path="/office/login" element={<Login />} />
-          <Route path="/office/dashboard" element={<Dashboard />} />
+          <Route path="/office/forgot-password" element={<ForgotPassword />} />
+          <Route path="/office/reset-password" element={<ResetPassword />} />
+
+          {/* Office Protected Routes (With Sidebar) */}
+          <Route path="/office/dashboard" element={<OfficeLayout><Dashboard /></OfficeLayout>} />
+          <Route path="/office/asset" element={<OfficeLayout><Asset /></OfficeLayout>} />
+          <Route path="/office/asset/create" element={<OfficeLayout><CreateAsset /></OfficeLayout>} />
+          <Route path="/office/asset/edit/:id" element={<OfficeLayout><EditAsset /></OfficeLayout>} />
+          <Route path="/office/galeri" element={<OfficeLayout><Galeri /></OfficeLayout>} />
+          <Route path="/office/pengguna" element={<OfficeLayout><Pengguna /></OfficeLayout>} />
+          <Route path="/office/pengaturan" element={<OfficeLayout><Pengaturan /></OfficeLayout>} />
         </Routes>
       </main>
-      {!isOffice && <Footer />}
+      {!isOfficeNoAuth && !isOfficeAuth && <Footer />}
     </>
   )
 }

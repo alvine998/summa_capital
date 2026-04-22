@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Target, Telescope, Scale } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
@@ -37,21 +38,21 @@ export default function AboutUs() {
       <section className="section">
         <div className="container mv-grid">
           <div className="mv-card mv-card--gold">
-            <div className="mv-card__icon">🎯</div>
+            <Target className="mv-card__icon" size={32} />
             <h3 className="mv-card__title">Misi</h3>
             <p className="mv-card__text">
               Memberikan solusi manajemen aset yang transparan, profesional, dan menguntungkan untuk memaksimalkan nilai investasi klien dengan integritas tertinggi.
             </p>
           </div>
           <div className="mv-card">
-            <div className="mv-card__icon">🔭</div>
+            <Telescope className="mv-card__icon" size={32} />
             <h3 className="mv-card__title">Visi</h3>
             <p className="mv-card__text">
               Menjadi perusahaan manajemen aset terdepan di Asia Tenggara yang dikenal atas keunggulan, inovasi, dan kepercayaan klien.
             </p>
           </div>
           <div className="mv-card">
-            <div className="mv-card__icon">⚖️</div>
+            <Scale className="mv-card__icon" size={32} />
             <h3 className="mv-card__title">Nilai</h3>
             <p className="mv-card__text">
               Integritas, Transparansi, Inovasi, dan Pertumbuhan Berkelanjutan menjadi fondasi setiap keputusan dan tindakan kami.

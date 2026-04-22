@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { MapPin, Phone, Mail } from 'lucide-react'
 import './Footer.css'
 
 const links = {
@@ -53,9 +54,9 @@ export default function Footer() {
           <div className="footer__col">
             <h4 className="footer__col-title">Kontak</h4>
             <ul className="footer__col-list footer__contact-list">
-              <li><span className="footer__contact-icon">📍</span> Jl. Jenderal Sudirman No. 28, Jakarta Selatan</li>
-              <li><span className="footer__contact-icon">📞</span> +62 21 5790 0000</li>
-              <li><span className="footer__contact-icon">✉️</span> info@summacapital.co.id</li>
+              <li><MapPin className="footer__contact-icon" size={18} /> Jl. Jenderal Sudirman No. 28, Jakarta Selatan</li>
+              <li><Phone className="footer__contact-icon" size={18} /> +62 21 5790 0000</li>
+              <li><Mail className="footer__contact-icon" size={18} /> info@summacapital.co.id</li>
             </ul>
           </div>
         </div>
