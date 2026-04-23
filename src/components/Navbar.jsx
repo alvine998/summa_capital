@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import './Navbar.css'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [assetOpen, setAssetOpen] = useState(false)
+  const { pathname } = useLocation()
   const closeTimeoutRef = useRef(null)
 
   useEffect(() => {
@@ -33,11 +34,11 @@ export default function Navbar() {
   }
 
   return (
-    <header className={`navbar${scrolled ? ' navbar--scrolled' : ''}`}>
+    <header className={`navbar${scrolled ? ' navbar--scrolled' : ''}${pathname.includes('/bid/detail') ? ' navbar--dark-text' : ''}`}>
       <div className="navbar__inner">
         {/* Logo */}
         <Link to="/" className="navbar__logo" onClick={closeMobile}>
-          <img src="/images/logo.png" alt="Summa Capital Logo" className="navbar__logo-icon" />
+          <img src="/images/logo-gold.png" alt="Summa Capital Logo" className="navbar__logo-icon" />
           <span className="navbar__logo-text">
             Summa <strong>Capital</strong>
           </span>

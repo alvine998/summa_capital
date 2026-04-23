@@ -32,7 +32,7 @@ export default function Login() {
 
       // Basic validation
       if (!form.email || !form.password) {
-        setError("Email dan password harus diisi");
+        setError("Email and password are required");
         setLoading(false);
         return;
       }
@@ -52,7 +52,7 @@ export default function Login() {
 
       navigate("/office/dashboard");
     } catch (err) {
-      setError("Terjadi kesalahan. Coba lagi.");
+      setError("An error occurred. Try again.");
     } finally {
       setLoading(false);
     }
@@ -67,24 +67,24 @@ export default function Login() {
         <div className="login-brand">
           <div className="login-logo">
             <img
-              src="/images/logo.png"
+              src="/images/logo-gold.png"
               alt="Summa Capital Logo"
               className="login-logo-icon"
             />
           </div>
-          <h1 className="login-title">Summa Capital</h1>
-          <p className="login-subtitle">CMS Dashboard</p>
-          <p className="login-description">
-            Portal manajemen konten dan aset untuk administrator Summa Capital.
-          </p>
+          {/* <h1 className="login-title">Summa Capital</h1> */}
+          {/* <p className="login-subtitle">CMS Dashboard</p> */}
+          {/* <p className="login-description">
+            Content and asset management portal for Summa Capital administrators.
+          </p> */}
         </div>
 
         {/* Right - Form */}
         <div className="login-form-wrap">
           <div className="login-form-card">
-            <h2 className="login-form-title">Masuk ke Dashboard</h2>
+            <h2 className="login-form-title">Login to Dashboard</h2>
             <p className="login-form-desc">
-              Gunakan kredensial Anda untuk akses
+              Use your credentials to access
             </p>
 
             {error && <div className="login-error">{error}</div>}
@@ -127,20 +127,20 @@ export default function Login() {
                     onChange={handleChange}
                     disabled={loading}
                   />
-                  <span>Ingat saya</span>
+                  <span>Remember me</span>
                 </label>
                 <a href="/office/forgot-password" className="form-link">
-                  Lupa password?
+                  Forgot password?
                 </a>
               </div>
 
               <button type="submit" className="login-btn" disabled={loading}>
-                {loading ? "Memproses..." : "Masuk"}
+                {loading ? "Processing..." : "Login"}
               </button>
             </form>
 
             <div className="login-footer">
-              <p>Demo: gunakan email apapun dengan password apapun</p>
+              <p>Demo: use any email with any password</p>
             </div>
           </div>
         </div>

@@ -223,6 +223,33 @@
   line-height: 1.5;
 }
 
+/* Charts */
+.dashboard-charts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.chart-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8E8;
+  border-radius: 14px;
+  padding: 1.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.chart-card h3 {
+  font-size: 1rem;
+  color: #1A1A1A;
+  margin: 0 0 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.chart-card :deep(.apexcharts-tooltip) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .dashboard-stats {
@@ -230,6 +257,10 @@
   }
 
   .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-charts {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -247,6 +278,10 @@
     grid-template-columns: 1fr;
   }
 
+  .dashboard-charts {
+    grid-template-columns: 1fr;
+  }
+
   .dashboard-welcome {
     padding: 1.75rem;
   }
@@ -261,5 +296,13 @@
 
   .office-header-title {
     font-size: 1.1rem;
+  }
+
+  .chart-card {
+    padding: 1.25rem;
+  }
+
+  .chart-card h3 {
+    font-size: 0.9rem;
   }
 }

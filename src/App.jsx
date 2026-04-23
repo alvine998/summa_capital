@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import OfficeLayout from './components/Office/OfficeLayout'
 import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import AssetBid from './pages/AssetBid'
+import BidDetail from './pages/AssetBid/BidDetail'
 import EarlyAccess from './pages/EarlyAccess'
 import Contact from './pages/Contact'
 import Gallery from './pages/Gallery'
@@ -19,11 +21,21 @@ import CreateAsset from './pages/Office/Asset/Create'
 import EditAsset from './pages/Office/Asset/Edit'
 import Galeri from './pages/Office/Galeri'
 import Pengguna from './pages/Office/Pengguna'
+import CreatePengguna from './pages/Office/Pengguna/Create'
+import EditPengguna from './pages/Office/Pengguna/Edit'
 import Pengaturan from './pages/Office/Pengaturan'
+import EarlyAccessOffice from './pages/Office/EarlyAccess'
+import CreateEarlyAccess from './pages/Office/EarlyAccess/Create'
+import EditEarlyAccess from './pages/Office/EarlyAccess/Edit'
 import './App.css'
 
 function AppContent() {
   const location = useLocation()
+  
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+  
   const isOfficeAuth = location.pathname.includes('/office') && 
                        !location.pathname.includes('/office/login') &&
                        !location.pathname.includes('/office/forgot-password') &&
@@ -42,6 +54,7 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/asset/bid" element={<AssetBid />} />
+          <Route path="/bid/detail/:id" element={<BidDetail />} />
           <Route path="/asset/early-access" element={<EarlyAccess />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/asset/sebaran" element={<SebotanAsset />} />
@@ -58,8 +71,13 @@ function AppContent() {
           <Route path="/office/asset" element={<OfficeLayout><Asset /></OfficeLayout>} />
           <Route path="/office/asset/create" element={<OfficeLayout><CreateAsset /></OfficeLayout>} />
           <Route path="/office/asset/edit/:id" element={<OfficeLayout><EditAsset /></OfficeLayout>} />
+          <Route path="/office/early-access" element={<OfficeLayout><EarlyAccessOffice /></OfficeLayout>} />
+          <Route path="/office/early-access/create" element={<OfficeLayout><CreateEarlyAccess /></OfficeLayout>} />
+          <Route path="/office/early-access/edit/:id" element={<OfficeLayout><EditEarlyAccess /></OfficeLayout>} />
           <Route path="/office/galeri" element={<OfficeLayout><Galeri /></OfficeLayout>} />
           <Route path="/office/pengguna" element={<OfficeLayout><Pengguna /></OfficeLayout>} />
+          <Route path="/office/pengguna/create" element={<OfficeLayout><CreatePengguna /></OfficeLayout>} />
+          <Route path="/office/pengguna/edit/:id" element={<OfficeLayout><EditPengguna /></OfficeLayout>} />
           <Route path="/office/pengaturan" element={<OfficeLayout><Pengaturan /></OfficeLayout>} />
         </Routes>
       </main>

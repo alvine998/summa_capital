@@ -85,7 +85,7 @@ export default function ResetPassword() {
           <h1 className="reset-title">Summa Capital</h1>
           <p className="reset-subtitle">CMS Dashboard</p>
           <p className="reset-description">
-            Buat password baru untuk akun Anda dan lanjutkan akses ke dashboard admin.
+            Create a new password for your account and continue accessing the admin dashboard.
           </p>
         </div>
 
@@ -96,7 +96,7 @@ export default function ResetPassword() {
               <>
                 <h2 className="reset-form-title">Reset Password</h2>
                 <p className="reset-form-desc">
-                  Buat password baru yang kuat untuk akun Anda
+                  Create a strong new password for your account
                 </p>
 
                 {error && <div className="reset-error">{error}</div>}
@@ -117,28 +117,28 @@ export default function ResetPassword() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Kode Reset</label>
+                    <label className="form-label">Reset Code</label>
                     <input
                       type="text"
                       name="code"
                       value={form.code}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="Masukkan kode dari email"
+                      placeholder="Enter the code from your email"
                       disabled={loading}
                     />
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Password Baru</label>
+                    <label className="form-label">New Password</label>
                     <div className="password-wrapper">
                       <input
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         value={form.password}
                         onChange={handleChange}
                         className="form-input"
-                        placeholder="Minimal 8 karakter"
+                        placeholder="Minimum 8 characters"
                         disabled={loading}
                         autoComplete="new-password"
                       />
@@ -154,38 +154,38 @@ export default function ResetPassword() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Konfirmasi Password</label>
+                    <label className="form-label">Confirm Password</label>
                     <input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       name="confirmPassword"
                       value={form.confirmPassword}
                       onChange={handleChange}
                       className="form-input"
-                      placeholder="Ulangi password baru"
+                      placeholder="Repeat new password"
                       disabled={loading}
                       autoComplete="new-password"
                     />
                   </div>
 
                   <button type="submit" className="reset-btn" disabled={loading}>
-                    {loading ? 'Memproses...' : 'Reset Password'}
+                    {loading ? "Processing..." : "Reset Password"}
                   </button>
                 </form>
 
                 <div className="reset-footer">
                   <p>
-                    <Link to="/office/login" className="back-link">← Kembali ke Login</Link>
+                    <Link to="/office/login" className="back-link">← Back to Login</Link>
                   </p>
                 </div>
               </>
             ) : (
               <div className="success-state">
                 <CheckCircle className="success-icon" size={48} />
-                <h2 className="success-title">Password Berhasil Direset!</h2>
+                <h2 className="success-title">Password Successfully Reset!</h2>
                 <p className="success-message">
-                  Password Anda telah diperbarui. Silakan login dengan password baru Anda.
+                  Your password has been updated. Please log in with your new password.
                 </p>
-                <p className="success-redirect">Mengarahkan ke login dalam 2 detik...</p>
+                <p className="success-redirect">Redirecting to login in 2 seconds...</p>
               </div>
             )}
           </div>

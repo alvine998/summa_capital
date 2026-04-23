@@ -45,22 +45,20 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 4rem;
   color: #FFFFFF;
 }
 
 .login-logo {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, #C9A84C, #A8843D);
+  width: 250px;
+  height: 250px;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.4);
-}
+ }
 
 .login-logo-icon {
   font-size: 1.35rem;

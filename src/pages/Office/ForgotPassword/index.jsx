@@ -26,13 +26,13 @@ export default function ForgotPassword() {
 
       // Basic validation
       if (!email) {
-        setError('Email harus diisi')
+        setError("Email is required")
         setLoading(false)
         return
       }
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        setError('Email tidak valid')
+        setError("Email is invalid")
         setLoading(false)
         return
       }
@@ -59,7 +59,7 @@ export default function ForgotPassword() {
           <h1 className="forgot-title">Summa Capital</h1>
           <p className="forgot-subtitle">CMS Dashboard</p>
           <p className="forgot-description">
-            Pulihkan akses ke akun Anda dengan mengikuti instruksi yang dikirim ke email Anda.
+            Recover access to your account by following the instructions sent to your email.
           </p>
         </div>
 
@@ -68,9 +68,9 @@ export default function ForgotPassword() {
           <div className="forgot-form-card">
             {!submitted ? (
               <>
-                <h2 className="forgot-form-title">Lupa Password?</h2>
+                <h2 className="forgot-form-title">Forgot Password?</h2>
                 <p className="forgot-form-desc">
-                  Masukkan email Anda dan kami akan mengirimkan link untuk reset password.
+                  Enter your email and we'll send you a password reset link.
                 </p>
 
                 {error && <div className="forgot-error">{error}</div>}
@@ -91,32 +91,32 @@ export default function ForgotPassword() {
                   </div>
 
                   <button type="submit" className="forgot-btn" disabled={loading}>
-                    {loading ? 'Mengirim...' : 'Kirim Link Reset'}
+                    {loading ? "Sending..." : "Send Reset Link"}
                   </button>
                 </form>
 
                 <div className="forgot-footer">
                   <p>
-                    <Link to="/office/login" className="back-link">← Kembali ke Login</Link>
+                    <Link to="/office/login" className="back-link">← Back to Login</Link>
                   </p>
                 </div>
               </>
             ) : (
               <div className="success-state">
                 <CheckCircle className="success-icon" size={48} />
-                <h2 className="success-title">Email Terkirim!</h2>
+                <h2 className="success-title">Email Sent!</h2>
                 <p className="success-message">
-                  Kami telah mengirimkan link reset password ke:
+                  We've sent a password reset link to:
                 </p>
                 <p className="success-email">{email}</p>
                 <p className="success-instruction">
-                  Silakan cek email Anda (termasuk folder Spam) dan klik link yang disediakan untuk melanjutkan proses reset password.
+                  Please check your email (including the Spam folder) and click the link provided to continue the password reset process.
                 </p>
                 <button
-                  onClick={() => navigate('/office/login')}
+                  onClick={() => navigate("/office/login")}
                   className="success-btn"
                 >
-                  Kembali ke Login
+                  Back to Login
                 </button>
               </div>
             )}

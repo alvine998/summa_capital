@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Gem, Image, Users, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Gem, Image, Users, Settings, LogOut, ChevronDown, Gavel, Sparkles } from "lucide-react";
 import "./Sidebar.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isAssetSection = location.pathname.startsWith("/office/asset") || location.pathname.startsWith("/office/early-access");
+  const [assetOpen, setAssetOpen] = useState(isAssetSection);
 
   const isActive = (path) =>
     location.pathname === path || location.pathname.startsWith(path + "/");
@@ -32,20 +36,45 @@ export default function Sidebar() {
             <span className="nav-label">Dashboard</span>
           </button>
 
-          <button
-            className={`nav-item ${isActive("/office/asset") ? "active" : ""}`}
-            onClick={() => navigate("/office/asset")}
-          >
-            <Gem className="nav-icon" size={20} />
-            <span className="nav-label">Asset</span>
-          </button>
+          {/* Asset Accordion */}
+          <div className="nav-accordion">
+            <button
+              className={`nav-item nav-accordion-trigger ${isAssetSection ? "active" : ""}`}
+              onClick={() => setAssetOpen(prev => !prev)}
+            >
+              <Gem className="nav-icon" size={20} />
+              <span className="nav-label">Asset</span>
+              <ChevronDown
+                className={`nav-chevron ${assetOpen ? "open" : ""}`}
+                size={16}
+              />
+            </button>
+            {assetOpen && (
+              <div className="nav-sub">
+                <button
+                  className={`nav-sub-item ${isActive("/office/asset") ? "active" : ""}`}
+                  onClick={() => navigate("/office/asset")}
+                >
+                  <Gavel size={15} />
+                  <span>Auction</span>
+                </button>
+                <button
+                  className={`nav-sub-item ${isActive("/office/early-access") ? "active" : ""}`}
+                  onClick={() => navigate("/office/early-access")}
+                >
+                  <Sparkles size={15} />
+                  <span>Early Access</span>
+                </button>
+              </div>
+            )}
+          </div>
 
           <button
             className={`nav-item ${isActive("/office/galeri") ? "active" : ""}`}
             onClick={() => navigate("/office/galeri")}
           >
             <Image className="nav-icon" size={20} />
-            <span className="nav-label">Galeri</span>
+            <span className="nav-label">Gallery</span>
           </button>
 
           <button
@@ -53,7 +82,7 @@ export default function Sidebar() {
             onClick={() => navigate("/office/pengguna")}
           >
             <Users className="nav-icon" size={20} />
-            <span className="nav-label">Pengguna</span>
+            <span className="nav-label">Users</span>
           </button>
 
           <button
@@ -61,7 +90,7 @@ export default function Sidebar() {
             onClick={() => navigate("/office/pengaturan")}
           >
             <Settings className="nav-icon" size={20} />
-            <span className="nav-label">Pengaturan</span>
+            <span className="nav-label">Settings</span>
           </button>
         </div>
       </nav>
@@ -76,7 +105,7 @@ export default function Sidebar() {
           }}
         >
           <LogOut size={18} />
-          <span>Keluar</span>
+          <span>Logout</span>
         </button>
       </div>
     </aside>

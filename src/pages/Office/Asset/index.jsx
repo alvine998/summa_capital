@@ -4,29 +4,44 @@ import { Gem } from 'lucide-react'
 import './asset.css'
 
 const assetData = {
-  menunggu: [
-    { id: 1, title: 'Tanah Premium di Senayan', estimate: 'Rp 5M', deadline: '15 Des 2024' },
-    { id: 2, title: 'Apartemen Mewah Jakarta Selatan', estimate: 'Rp 3.2M', deadline: '20 Des 2024' }
+  pending: [
+    { id: 1, title: 'Premium Land in Senayan', estimate: 'Rp 5B', deadline: 'Dec 15, 2024' },
+    { id: 2, title: 'Luxury Apartment South Jakarta', estimate: 'Rp 3.2B', deadline: 'Dec 20, 2024' }
   ],
   publish: [
-    { id: 3, title: 'Ruko Komersial Bandung', estimate: 'Rp 2.5M', deadline: '10 Des 2024' },
-    { id: 4, title: 'Vila Eksklusif Bali', estimate: 'Rp 8M', deadline: '25 Des 2024' },
-    { id: 5, title: 'Properti Investasi Surabaya', estimate: 'Rp 1.8M', deadline: '5 Jan 2025' }
+    { id: 3, title: 'Commercial Ruko Bandung', estimate: 'Rp 2.5B', deadline: 'Dec 10, 2024' },
+    { id: 4, title: 'Exclusive Villa Bali', estimate: 'Rp 8B', deadline: 'Dec 25, 2024' },
+    { id: 5, title: 'Investment Property Surabaya', estimate: 'Rp 1.8B', deadline: 'Jan 5, 2025' }
   ],
-  ditolak: [
-    { id: 6, title: 'Kios Kecil di Pasar', estimate: 'Rp 500J', deadline: '1 Des 2024' }
+  rejected: [
+    { id: 6, title: 'Small Kiosk in Market', estimate: 'Rp 500M', deadline: 'Dec 1, 2024' }
   ]
 }
 
 export default function Asset() {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('menunggu')
+  const [activeTab, setActiveTab] = useState('pending')
+  const [deleteModal, setDeleteModal] = useState({ show: false, id: null, title: '' })
 
   const tabConfig = [
-    { id: 'menunggu', label: 'Menunggu', count: assetData.menunggu.length },
-    { id: 'publish', label: 'Publish', count: assetData.publish.length },
-    { id: 'ditolak', label: 'Ditolak', count: assetData.ditolak.length }
+    { id: 'pending', label: 'Pending', count: assetData.pending.length },
+    { id: 'publish', label: 'Published', count: assetData.publish.length },
+    { id: 'rejected', label: 'Rejected', count: assetData.rejected.length }
   ]
+
+  const handleDeleteClick = (id, title) => {
+    setDeleteModal({ show: true, id, title })
+  }
+
+  const handleConfirmDelete = () => {
+    // Delete functionality would go here (API call)
+    // For now, just close the modal
+    setDeleteModal({ show: false, id: null, title: '' })
+  }
+
+  const handleCancelDelete = () => {
+    setDeleteModal({ show: false, id: null, title: '' })
+  }
 
   return (
     <div className="office-page">
@@ -34,7 +49,7 @@ export default function Asset() {
         <div className="office-header-content">
           <h1 className="office-header-title"><Gem className="inline-icon" size={28} /> Asset Management</h1>
           <button className="add-btn" onClick={() => navigate('/office/asset/create')}>
-            + Tambah Asset
+            + Add Asset
           </button>
         </div>
       </div>
@@ -63,7 +78,7 @@ export default function Asset() {
                 <h3 className="asset-title">{item.title}</h3>
                 <div className="asset-info">
                   <div className="info-item">
-                    <span className="info-label">Estimasi</span>
+                    <span className="info-label">Estimate</span>
                     <span className="info-value">{item.estimate}</span>
                   </div>
                   <div className="info-item">
@@ -75,13 +90,33 @@ export default function Asset() {
                   <button className="action-btn edit" onClick={() => navigate(`/office/asset/edit/${item.id}`)}>
                     Edit
                   </button>
-                  <button className="action-btn delete">Hapus</button>
+                  <button className="action-btn delete" onClick={() => handleDeleteClick(item.id, item.title)}>Delete</button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && (
+        <div className="modal-overlay" onClick={handleCancelDelete}>
+          <div className="modal-box" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">Delete Asset</h2>
+              <button className="modal-close" onClick={handleCancelDelete}>×</button>
+            </div>
+            <div className="modal-content">
+              <p>Are you sure you want to delete <strong>{deleteModal.title}</strong>?</p>
+              <p className="modal-warning">This action cannot be undone.</p>
+            </div>
+            <div className="modal-actions">
+              <button className="modal-btn cancel" onClick={handleCancelDelete}>Cancel</button>
+              <button className="modal-btn confirm" onClick={handleConfirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

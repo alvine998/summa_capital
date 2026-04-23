@@ -1,60 +1,49 @@
 import { Link } from 'react-router-dom'
-import { Lock, Gem, BarChart3, Briefcase } from 'lucide-react'
+import { MapPin, CalendarDays, AreaChart, Tag, ImageIcon } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
 
 const assets = [
   {
     id: 1,
-    title: 'Residential Superblock East Bekasi',
-    type: 'Residential Property',
-    value: 'IDR 95,000,000,000',
-    slots: 12,
-    slotsLeft: 3,
-    return: '14–18% p.a.',
-    horizon: '36 Months',
-    status: 'Almost Full',
+    title: 'Premium Land in Pondok Indah',
+    description: 'Strategic land in a highly sought-after premium residential area with excellent connectivity and growth potential.',
+    location: 'South Jakarta',
+    area: '600 m²',
+    estimate: 'Rp 4.5B',
+    deadline: 'May 30, 2025',
+    status: 'Active',
+    image: null,
   },
   {
     id: 2,
-    title: 'Data Center West Jakarta',
-    type: 'Technology Property',
-    value: 'IDR 220,000,000,000',
-    slots: 20,
-    slotsLeft: 8,
-    return: '16–22% p.a.',
-    horizon: '48 Months',
-    status: 'Available',
+    title: 'Luxury Penthouse SCBD',
+    description: 'Top floor penthouse with panoramic city views in Jakarta\'s premier central business district.',
+    location: 'Central Jakarta',
+    area: '280 m²',
+    estimate: 'Rp 12B',
+    deadline: 'Jun 15, 2025',
+    status: 'Active',
+    image: null,
   },
   {
     id: 3,
-    title: 'Mixed-Use Development Surabaya',
-    type: 'Commercial Property',
-    value: 'IDR 175,000,000,000',
-    slots: 15,
-    slotsLeft: 6,
-    return: '12–16% p.a.',
-    horizon: '30 Months',
-    status: 'Available',
-  },
-  {
-    id: 4,
-    title: 'Eco Resort Lombok',
-    type: 'Hospitality Property',
-    value: 'IDR 68,000,000,000',
-    slots: 10,
-    slotsLeft: 1,
-    return: '18–24% p.a.',
-    horizon: '60 Months',
-    status: 'Almost Full',
+    title: 'Commercial Space Serpong',
+    description: 'Strategic commercial property in the rapidly growing BSD City area, ideal for retail and office use.',
+    location: 'Tangerang',
+    area: '320 m²',
+    estimate: 'Rp 3.2B',
+    deadline: 'Apr 10, 2025',
+    status: 'Closed',
+    image: null,
   },
 ]
 
-const perks = [
-  { icon: Lock, title: 'Pre-Market Access', desc: 'Get information on selected assets before they are opened to the general market.' },
-  { icon: Gem, title: 'Exclusive Pricing', desc: 'Enjoy more competitive pricing and investment terms.' },
-  { icon: BarChart3, title: 'In-Depth Reports', desc: 'Access comprehensive due diligence and valuation reports.' },
-  { icon: Briefcase, title: 'Personal Consultation', desc: 'Direct access to our senior investment consultants.' },
+const benefits = [
+  { icon: '🔑', title: 'Pre-Market Access', desc: 'Get information on selected assets before they are opened to the general market.' },
+  { icon: '💎', title: 'Exclusive Pricing', desc: 'Enjoy more competitive pricing and investment terms reserved for early registrants.' },
+  { icon: '📊', title: 'In-Depth Reports', desc: 'Access comprehensive due diligence and valuation reports for every listing.' },
+  { icon: '🤝', title: 'Personal Consultation', desc: 'Direct access to our senior investment consultants for tailored guidance.' },
 ]
 
 export default function EarlyAccess() {
@@ -69,7 +58,7 @@ export default function EarlyAccess() {
         </div>
       </section>
 
-      {/* Perks */}
+      {/* Benefits */}
       <section className="section bg-light">
         <div className="container">
           <div className="section-header">
@@ -77,11 +66,11 @@ export default function EarlyAccess() {
             <h2 className="section-title">Why <span className="text-gold">Early Access?</span></h2>
           </div>
           <div className="perks-grid">
-            {perks.map(p => (
-              <div key={p.title} className="perk-card">
-                <p.icon className="perk-card__icon" size={32} />
-                <h4 className="perk-card__title">{p.title}</h4>
-                <p className="perk-card__desc">{p.desc}</p>
+            {benefits.map(b => (
+              <div key={b.title} className="perk-card">
+                <div className="perk-card__icon">{b.icon}</div>
+                <h4 className="perk-card__title">{b.title}</h4>
+                <p className="perk-card__desc">{b.desc}</p>
               </div>
             ))}
           </div>
@@ -92,54 +81,60 @@ export default function EarlyAccess() {
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">Exclusive Assets</span>
+            <span className="section-badge">Exclusive Listings</span>
             <h2 className="section-title">Assets <span className="text-gold">Available</span></h2>
-            <p className="section-desc">Investment slots are limited. Register your interest now for more information.</p>
+            <p className="section-desc">Investment opportunities are limited. Register your interest now for more information.</p>
           </div>
           <div className="ea-grid">
-            {assets.map(a => {
-              const pct = Math.round(((a.slots - a.slotsLeft) / a.slots) * 100)
-              return (
-                <div key={a.id} className="ea-card">
-                  <div className="ea-card__header">
-                    <span className="ea-card__type">{a.type}</span>
-                    <span className={`ea-card__status ea-card__status--${a.status === 'Almost Full' ? 'low' : 'ok'}`}>
-                      {a.status}
-                    </span>
-                  </div>
-                  <h3 className="ea-card__title">{a.title}</h3>
-                  <div className="ea-card__meta">
-                    <div className="ea-card__meta-item">
-                      <span className="ea-card__meta-label">Asset Value</span>
-                      <span className="ea-card__meta-value">{a.value}</span>
-                    </div>
-                    <div className="ea-card__meta-item">
-                      <span className="ea-card__meta-label">Projected Return</span>
-                      <span className="ea-card__meta-value ea-card__meta-value--gold">{a.return}</span>
-                    </div>
-                    <div className="ea-card__meta-item">
-                      <span className="ea-card__meta-label">Investment Horizon</span>
-                      <span className="ea-card__meta-value">{a.horizon}</span>
-                    </div>
-                  </div>
-                  <div className="ea-card__slots">
-                    <div className="ea-card__slots-info">
-                      <span>Slots Remaining</span>
-                      <span><strong>{a.slotsLeft}</strong> / {a.slots}</span>
-                    </div>
-                    <div className="ea-card__progress">
-                      <div className="ea-card__progress-bar" style={{ width: `${pct}%` }} />
-                    </div>
-                  </div>
-                  <button className="ea-card__cta">Register Interest</button>
+            {assets.map(a => (
+              <div key={a.id} className={`ea-card ${a.status === 'Closed' ? 'ea-card--closed' : ''}`}>
+                {/* Image */}
+                <div className="ea-card__image">
+                  {a.image
+                    ? <img src={a.image} alt={a.title} className="ea-card__img" />
+                    : <div className="ea-card__img-placeholder"><ImageIcon size={32} /></div>
+                  }
+                  <span className={`ea-card__status-pill ea-card__status-pill--${a.status === 'Active' ? 'active' : 'closed'}`}>
+                    {a.status}
+                  </span>
                 </div>
-              )
-            })}
+
+                {/* Body */}
+                <div className="ea-card__body">
+                  <h3 className="ea-card__title">{a.title}</h3>
+                  <p className="ea-card__desc">{a.description}</p>
+
+                  <div className="ea-card__info">
+                    <div className="ea-card__info-item">
+                      <MapPin size={14} className="ea-card__info-icon" />
+                      <span>{a.location}</span>
+                    </div>
+                    <div className="ea-card__info-item">
+                      <AreaChart size={14} className="ea-card__info-icon" />
+                      <span>{a.area}</span>
+                    </div>
+                    <div className="ea-card__info-item">
+                      <Tag size={14} className="ea-card__info-icon" />
+                      <span className="ea-card__estimate">{a.estimate}</span>
+                    </div>
+                    <div className="ea-card__info-item">
+                      <CalendarDays size={14} className="ea-card__info-icon" />
+                      <span>Deadline: {a.deadline}</span>
+                    </div>
+                  </div>
+
+                  {a.status === 'Active'
+                    ? <button className="ea-card__cta">Register Interest</button>
+                    : <button className="ea-card__cta ea-card__cta--closed" disabled>Closed</button>
+                  }
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Register CTA */}
+      {/* CTA */}
       <section className="page-cta">
         <div className="container page-cta__inner">
           <h2 className="page-cta__title">Join the Early Access Program</h2>

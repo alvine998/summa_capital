@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import '../PageShared.css'
 import './style.css'
 
@@ -14,6 +15,7 @@ const bids = [
 const categories = ['All', 'Commercial Property', 'Industrial Land', 'Retail Property', 'Residential Property', 'Hospitality Property', 'Industrial Property']
 
 export default function AssetBid() {
+  const navigate = useNavigate()
   const [filter, setFilter] = useState('All')
   const filtered = filter === 'All' ? bids : bids.filter(b => b.type === filter)
 
@@ -99,8 +101,10 @@ export default function AssetBid() {
                   </span>
                 </div>
                 <button
-                className={`bid-card__cta${item.status === 'Active' ? '' : ' bid-card__cta--disabled'}`} disabled={item.status !== 'Active'}>
-                  {item.status === 'Active' ? 'Place Bid' : 'Coming Soon'}
+                className={`bid-card__cta${item.status === 'Active' ? '' : ' bid-card__cta--disabled'}`} 
+                onClick={() => item.status === 'Active' && navigate(`/bid/detail/${item.id}`)}
+                disabled={item.status !== 'Active'}>
+                  {item.status === 'Active' ? 'View Detail' : 'Coming Soon'}
                 </button>
               </div>
             ))}

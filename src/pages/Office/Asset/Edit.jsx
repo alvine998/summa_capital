@@ -1,31 +1,31 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Edit } from 'lucide-react'
+import { Edit, X, Upload } from 'lucide-react'
 import './create.css'
 
 // Mock data - in real app, this would come from an API
 const mockAssets = {
   1: {
     id: 1,
-    title: 'Tanah Premium di Senayan',
-    type: 'Tanah',
-    description: 'Lokasi strategis dengan akses mudah ke area komersial',
-    estimate: 'Rp 5M',
+    title: 'Premium Land in Senayan',
+    type: 'Land',
+    description: 'Strategic location with easy access to commercial areas',
+    estimate: 'Rp 5B',
     deadline: '2024-12-15',
-    location: 'Jakarta Selatan',
+    location: 'South Jakarta',
     area: '500',
-    status: 'Menunggu'
+    status: 'Pending'
   },
   2: {
     id: 2,
-    title: 'Apartemen Mewah Jakarta Selatan',
-    type: 'Apartemen',
-    description: 'Apartemen dengan fasilitas lengkap di pusat kota',
-    estimate: 'Rp 3.2M',
+    title: 'Luxury Apartment South Jakarta',
+    type: 'Apartment',
+    description: 'Apartment with complete facilities in the city center',
+    estimate: 'Rp 3.2B',
     deadline: '2024-12-20',
-    location: 'Jakarta Selatan',
+    location: 'South Jakarta',
     area: '200',
-    status: 'Menunggu'
+    status: 'Pending'
   }
 }
 
@@ -36,6 +36,10 @@ export default function EditAsset() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [form, setForm] = useState(null)
+  const [photos, setPhotos] = useState([])
+
+  const MAX_PHOTOS = 10
+  const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
 
   useEffect(() => {
     // Simulate loading asset data
@@ -43,7 +47,7 @@ export default function EditAsset() {
     if (asset) {
       setForm(asset)
     } else {
-      setError('Asset tidak ditemukan')
+      setError('Asset not found')
       setTimeout(() => navigate('/office/asset'), 2000)
     }
   }, [id, navigate])
@@ -57,6 +61,49 @@ export default function EditAsset() {
     setError('')
   }
 
+  const handlePhotoChange = e => {
+    const files = Array.from(e.target.files || [])
+    const totalPhotos = photos.length + files.length
+
+    // Validate photo count
+    if (totalPhotos > MAX_PHOTOS) {
+      setError(`Maximum ${MAX_PHOTOS} photos allowed`)
+      return
+    }
+
+    // Validate file sizes
+    const invalidFiles = files.filter(file => file.size > MAX_FILE_SIZE)
+    if (invalidFiles.length > 0) {
+      setError('Each photo must be under 10 MB')
+      return
+    }
+
+    // Add new photos
+    const newPhotos = files.map(file => ({
+      id: Date.now() + Math.random(),
+      file,
+      preview: URL.createObjectURL(file),
+      name: file.name,
+      size: (file.size / 1024 / 1024).toFixed(2)
+    }))
+
+    setPhotos(prev => [...prev, ...newPhotos])
+    setError('')
+
+    // Reset input
+    e.target.value = ''
+  }
+
+  const removePhoto = id => {
+    setPhotos(prev => {
+      const photo = prev.find(p => p.id === id)
+      if (photo) {
+        URL.revokeObjectURL(photo.preview)
+      }
+      return prev.filter(p => p.id !== id)
+    })
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
@@ -65,7 +112,7 @@ export default function EditAsset() {
     try {
       // Validate form
       if (!form.title || !form.estimate || !form.deadline || !form.location) {
-        setError('Semua field wajib diisi')
+        setError('All required fields must be filled')
         setLoading(false)
         return
       }
@@ -79,7 +126,7 @@ export default function EditAsset() {
         navigate('/office/asset')
       }, 1500)
     } catch (err) {
-      setError('Terjadi kesalahan saat menyimpan asset')
+      setError('An error occurred while saving the asset')
     } finally {
       setLoading(false)
     }
@@ -96,7 +143,7 @@ export default function EditAsset() {
         <div className="office-content">
           <div className="form-container">
             <div className="form-card">
-              <p className="form-desc">Memuat data asset...</p>
+              <p className="form-desc">Loading asset data...</p>
             </div>
           </div>
         </div>
@@ -115,23 +162,23 @@ export default function EditAsset() {
       <div className="office-content">
         <div className="form-container">
           <div className="form-card">
-            <h2 className="form-title">Data Asset</h2>
-            <p className="form-desc">Perbarui informasi asset</p>
+            <h2 className="form-title">Asset Data</h2>
+            <p className="form-desc">Update asset information</p>
 
             {error && <div className="form-error">{error}</div>}
-            {success && <div className="success-message">Asset berhasil diperbarui!</div>}
+            {success && <div className="success-message">Asset updated successfully!</div>}
 
             <form onSubmit={handleSubmit} className="asset-form">
               <div className="form-row">
                 <div className="form-group full">
-                  <label className="form-label">Judul Asset *</label>
+                  <label className="form-label">Asset Title *</label>
                   <input
                     type="text"
                     name="title"
                     value={form.title}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Contoh: Tanah Premium di Senayan"
+                    placeholder="Example: Premium Land in Senayan"
                     disabled={loading || success}
                   />
                 </div>
@@ -139,7 +186,7 @@ export default function EditAsset() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Tipe Asset *</label>
+                  <label className="form-label">Asset Type *</label>
                   <select
                     name="type"
                     value={form.type}
@@ -147,12 +194,12 @@ export default function EditAsset() {
                     className="form-input"
                     disabled={loading || success}
                   >
-                    <option value="Tanah">Tanah</option>
-                    <option value="Bangunan">Bangunan</option>
-                    <option value="Apartemen">Apartemen</option>
-                    <option value="Ruko">Ruko</option>
-                    <option value="Vila">Vila</option>
-                    <option value="Lainnya">Lainnya</option>
+                    <option value="Land">Land</option>
+                    <option value="Building">Building</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Shop">Shop</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -165,22 +212,22 @@ export default function EditAsset() {
                     className="form-input"
                     disabled={loading || success}
                   >
-                    <option value="Menunggu">Menunggu</option>
-                    <option value="Publish">Publish</option>
-                    <option value="Ditolak">Ditolak</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Publish">Published</option>
+                    <option value="Rejected">Rejected</option>
                   </select>
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-group full">
-                  <label className="form-label">Deskripsi</label>
+                  <label className="form-label">Description</label>
                   <textarea
                     name="description"
                     value={form.description}
                     onChange={handleChange}
                     className="form-input form-textarea"
-                    placeholder="Deskripsi lengkap tentang asset..."
+                    placeholder="Complete description about the asset..."
                     rows="4"
                     disabled={loading || success}
                   />
@@ -189,27 +236,27 @@ export default function EditAsset() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Lokasi *</label>
+                  <label className="form-label">Location *</label>
                   <input
                     type="text"
                     name="location"
                     value={form.location}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Contoh: Jakarta Selatan"
+                    placeholder="Example: South Jakarta"
                     disabled={loading || success}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Luas (m²)</label>
+                  <label className="form-label">Area (m²)</label>
                   <input
                     type="text"
                     name="area"
                     value={form.area}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Contoh: 500"
+                    placeholder="Example: 500"
                     disabled={loading || success}
                   />
                 </div>
@@ -217,20 +264,20 @@ export default function EditAsset() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Estimasi Harga *</label>
+                  <label className="form-label">Estimated Price *</label>
                   <input
                     type="text"
                     name="estimate"
                     value={form.estimate}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Contoh: Rp 5M"
+                    placeholder="Example: Rp 5B"
                     disabled={loading || success}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Deadline Lelang *</label>
+                  <label className="form-label">Auction Deadline *</label>
                   <input
                     type="date"
                     name="deadline"
@@ -242,13 +289,62 @@ export default function EditAsset() {
                 </div>
               </div>
 
+              {/* Photo Upload */}
+              <div className="form-row">
+                <div className="form-group full">
+                  <label className="form-label">Photos (Max 10, each under 10 MB)</label>
+                  <div className="upload-area">
+                    <input
+                      type="file"
+                      id="photo-input"
+                      multiple
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      disabled={loading || success || photos.length >= MAX_PHOTOS}
+                      style={{ display: 'none' }}
+                    />
+                    <label htmlFor="photo-input" className={`upload-label ${photos.length >= MAX_PHOTOS ? 'disabled' : ''}`}>
+                      <Upload size={32} />
+                      <span className="upload-text">Click or drag photos here</span>
+                      <span className="upload-subtext">
+                        {photos.length}/{MAX_PHOTOS} photos
+                      </span>
+                    </label>
+                  </div>
+
+                  {/* Photo Preview Grid */}
+                  {photos.length > 0 && (
+                    <div className="photos-grid">
+                      {photos.map(photo => (
+                        <div key={photo.id} className="photo-item">
+                          <img src={photo.preview} alt={photo.name} />
+                          <div className="photo-info">
+                            <span className="photo-name">{photo.name}</span>
+                            <span className="photo-size">{photo.size} MB</span>
+                          </div>
+                          <button
+                            type="button"
+                            className="photo-delete"
+                            onClick={() => removePhoto(photo.id)}
+                            disabled={loading || success}
+                            title="Remove photo"
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="form-actions">
                 <button
                   type="submit"
                   className="btn btn-primary"
                   disabled={loading || success}
                 >
-                  {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
+                  {loading ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
                   type="button"
@@ -256,7 +352,7 @@ export default function EditAsset() {
                   onClick={() => navigate('/office/asset')}
                   disabled={loading || success}
                 >
-                  Batal
+                  Cancel
                 </button>
               </div>
             </form>

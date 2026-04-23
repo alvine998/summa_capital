@@ -27,7 +27,7 @@ export default function Footer() {
             <Link to="/" className="footer__logo">
               <span className="footer__logo-icon">
                 <img
-                  src="/images/logo.png"
+                  src="/images/logo-gold.png"
                   alt="Summa Capital Logo"
                   className="footer__logo-icon-img"
                 />
@@ -63,16 +63,18 @@ export default function Footer() {
             <h4 className="footer__col-title">Contact</h4>
             <ul className="footer__col-list footer__contact-list">
               <li>
-                <MapPin className="footer__contact-icon" size={18} /> Jl.
-                Jenderal Sudirman No. 28, Jakarta Selatan
+                <MapPin className="footer__contact-icon" size={18} /> Jl. Mega
+                Kuningan Barat No.3 5, RT.5/RW.2, Kuningan, Kuningan Tim.,
+                Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota
+                Jakarta 12949
               </li>
               <li>
-                <Phone className="footer__contact-icon" size={18} /> +62 21 5790
-                0000
+                <Phone className="footer__contact-icon" size={18} /> +62 813
+                2298 6243
               </li>
               <li>
                 <Mail className="footer__contact-icon" size={18} />{" "}
-                info@summacapital.co.id
+                info@summacapital.id
               </li>
             </ul>
           </div>
