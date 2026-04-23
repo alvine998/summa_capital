@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -230,6 +231,7 @@ function FlyToMarker({ selected }) {
 }
 
 export default function SebotanAsset() {
+  const navigate = useNavigate()
   const [selected, setSelected] = useState(null)
   const [panelOpen, setPanelOpen] = useState(false)
 
@@ -348,7 +350,16 @@ export default function SebotanAsset() {
                 </div>
 
                 {selected.status !== 'Sold' && (
-                  <button className="asset-panel__cta">
+                  <button 
+                    className="asset-panel__cta"
+                    onClick={() => {
+                      if (selected.status === 'Auction') {
+                        navigate(`/bid/detail/${selected.id}`)
+                      } else if (selected.status === 'Early Access') {
+                        navigate(`/early-access/detail/${selected.id}`)
+                      }
+                    }}
+                  >
                     View Full Details <ChevronRight size={16} />
                   </button>
                 )}

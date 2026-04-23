@@ -8,6 +8,7 @@ import AboutUs from './pages/AboutUs'
 import AssetBid from './pages/AssetBid'
 import BidDetail from './pages/AssetBid/BidDetail'
 import EarlyAccess from './pages/EarlyAccess'
+import EarlyAccessDetail from './pages/EarlyAccess/Detail'
 import Contact from './pages/Contact'
 import Gallery from './pages/Gallery'
 import SebotanAsset from './pages/SebotanAsset'
@@ -56,6 +57,7 @@ function AppContent() {
           <Route path="/asset/bid" element={<AssetBid />} />
           <Route path="/bid/detail/:id" element={<BidDetail />} />
           <Route path="/asset/early-access" element={<EarlyAccess />} />
+          <Route path="/early-access/detail/:id" element={<EarlyAccessDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/asset/sebaran" element={<SebotanAsset />} />
           <Route path="/gallery" element={<Gallery />} />

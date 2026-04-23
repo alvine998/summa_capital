@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MapPin, CalendarDays, AreaChart, Tag, ImageIcon } from 'lucide-react'
 import '../PageShared.css'
 import './style.css'
@@ -6,35 +6,46 @@ import './style.css'
 const assets = [
   {
     id: 1,
-    title: 'Premium Land in Pondok Indah',
-    description: 'Strategic land in a highly sought-after premium residential area with excellent connectivity and growth potential.',
-    location: 'South Jakarta',
-    area: '600 m²',
-    estimate: 'Rp 4.5B',
-    deadline: 'May 30, 2025',
+    title: 'Superblok Residensial Bekasi Timur',
+    description: 'Premium residential complex with complete facilities. Strategic location near toll road and commuter rail station.',
+    location: 'East Bekasi, West Java',
+    area: '5,600 m²',
+    estimate: 'Rp 95B',
+    deadline: 'Jun 15, 2026',
     status: 'Active',
     image: null,
   },
   {
     id: 2,
-    title: 'Luxury Penthouse SCBD',
-    description: 'Top floor penthouse with panoramic city views in Jakarta\'s premier central business district.',
-    location: 'Central Jakarta',
-    area: '280 m²',
-    estimate: 'Rp 12B',
-    deadline: 'Jun 15, 2025',
+    title: 'Mixed-Use Development Surabaya',
+    description: 'Integrated township (hotel, retail, apartments) in the heart of Surabaya. Projected rental income IDR 18B/year.',
+    location: 'Central Surabaya, East Java',
+    area: '8,900 m²',
+    estimate: 'Rp 175B',
+    deadline: 'Jul 10, 2026',
     status: 'Active',
     image: null,
   },
   {
     id: 3,
-    title: 'Commercial Space Serpong',
-    description: 'Strategic commercial property in the rapidly growing BSD City area, ideal for retail and office use.',
-    location: 'Tangerang',
-    area: '320 m²',
-    estimate: 'Rp 3.2B',
-    deadline: 'Apr 10, 2025',
-    status: 'Closed',
+    title: 'Data Center Jakarta Barat',
+    description: 'Tier-3 data center facility with 800-rack capacity. Long-term contracts with global hyperscalers.',
+    location: 'Kebon Jeruk, West Jakarta',
+    area: '4,100 m²',
+    estimate: 'Rp 220B',
+    deadline: 'Jul 25, 2026',
+    status: 'Active',
+    image: null,
+  },
+  {
+    id: 4,
+    title: 'Apartemen Waterfront Makassar',
+    description: 'Waterfront apartment with 270° ocean views. 180 units, resort-style facilities within the complex.',
+    location: 'CPI Makassar, South Sulawesi',
+    area: '3,800 m²',
+    estimate: 'Rp 78B',
+    deadline: 'Oct 01, 2026',
+    status: 'Active',
     image: null,
   },
 ]
@@ -47,6 +58,8 @@ const benefits = [
 ]
 
 export default function EarlyAccess() {
+  const navigate = useNavigate()
+  
   return (
     <div className="page">
       <section className="page-hero page-hero--dark-gold">
@@ -124,7 +137,7 @@ export default function EarlyAccess() {
                   </div>
 
                   {a.status === 'Active'
-                    ? <button className="ea-card__cta">Register Interest</button>
+                    ? <button className="ea-card__cta" onClick={() => navigate(`/early-access/detail/${a.id}`)}>Register Interest</button>
                     : <button className="ea-card__cta ea-card__cta--closed" disabled>Closed</button>
                   }
                 </div>
