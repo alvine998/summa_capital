@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Phone, Mail, Clock, Map, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, CheckCircle } from "lucide-react";
 import "../PageShared.css";
 import "./style.css";
 
@@ -89,12 +89,20 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Map placeholder */}
-            <div className="map-placeholder">
-              <div className="map-placeholder__inner">
-                <Map size={32} />
-                <span>Jl. Jenderal Sudirman, Jakarta</span>
-              </div>
+            {/* Map */}
+            <div className="contact-map">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.274877825399!2d106.82164797499041!3d-6.227444193760667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e4ac2fa421%3A0x2de3d495cc84d79d!2sThe%20Bellagio%20Boutique%20Mall!5e0!3m2!1sid!2sid!4v1776940375976!5m2!1sid!2sid"
+                style={{
+                  border: 0,
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '12px',
+                }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
 

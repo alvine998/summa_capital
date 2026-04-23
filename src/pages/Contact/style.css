@@ -98,27 +98,18 @@
 
 .social-chip:hover { border-color: #C9A84C; color: #C9A84C; }
 
-.map-placeholder {
+.contact-map {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #E8E8E8;
-  height: 180px;
-  background: linear-gradient(135deg, #FAFAFA, #F5F5F5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 400px;
+  background: #F5F5F5;
+  margin-top: 1.5rem;
 }
 
-.map-placeholder__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: #9A9A9A;
-  font-size: 0.85rem;
+.contact-map iframe {
+  border: none;
 }
-
-.map-placeholder__icon { font-size: 2.5rem; }
 
 /* Form */
 .contact-form-card {
@@ -227,5 +218,5 @@
   .contact-form-card { padding: 1.5rem; border-radius: 14px; }
   .contact-form__title { font-size: 1.2rem; }
   .contact-info__title { font-size: 1.25rem; }
-  .map-placeholder { height: 140px; }
+  .contact-map { height: 250px; }
 }
