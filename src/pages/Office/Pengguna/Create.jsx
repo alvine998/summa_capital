@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus } from 'lucide-react'
 import Toast, { useToast } from '../../../components/Toast/Toast'
+import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
 import './create.css'
 
 export default function CreatePengguna() {
@@ -57,6 +58,14 @@ export default function CreatePengguna() {
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Log activity
+      logActivity(ACTIVITY_TYPES.CREATE_USER, {
+        userName: form.name,
+        userEmail: form.email,
+        userRole: form.role,
+        userStatus: form.status
+      })
 
       // Success - show toast and redirect
       addToast('User created successfully!', 'success')

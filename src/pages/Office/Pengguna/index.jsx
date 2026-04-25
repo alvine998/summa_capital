@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users as UsersIcon, X } from 'lucide-react'
 import Toast, { useToast } from '../../../components/Toast/Toast'
+import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
 import './style.css'
 
 const initialUserData = [
@@ -34,7 +35,16 @@ export default function Users() {
   }
 
   const handleConfirmDelete = () => {
+    const deletedUser = userData.find(u => u.id === deleteModal.id)
     setUserData(prevData => prevData.filter(user => user.id !== deleteModal.id))
+    
+    // Log activity
+    logActivity(ACTIVITY_TYPES.DELETE_USER, {
+      userId: deleteModal.id,
+      userName: deleteModal.name,
+      userRole: deletedUser?.role
+    })
+    
     setDeleteModal({ show: false, id: null, name: '' })
     addToast('User deleted successfully!', 'success')
   }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Gem, Image, Users, Settings, LogOut, ChevronDown, Gavel, Sparkles } from "lucide-react";
+import { LayoutDashboard, Gem, Image, Users, Settings, LogOut, ChevronDown, Gavel, Sparkles, Mail, History } from "lucide-react";
+import { logActivity, ACTIVITY_TYPES } from "../../services/activityLog";
 import "./Sidebar.css";
 
 export default function Sidebar() {
@@ -78,6 +79,14 @@ export default function Sidebar() {
           </button>
 
           <button
+            className={`nav-item ${isActive("/office/messages") ? "active" : ""}`}
+            onClick={() => navigate("/office/messages")}
+          >
+            <Mail className="nav-icon" size={20} />
+            <span className="nav-label">Messages</span>
+          </button>
+
+          <button
             className={`nav-item ${isActive("/office/pengguna") ? "active" : ""}`}
             onClick={() => navigate("/office/pengguna")}
           >
@@ -92,6 +101,14 @@ export default function Sidebar() {
             <Settings className="nav-icon" size={20} />
             <span className="nav-label">Settings</span>
           </button>
+
+          <button
+            className={`nav-item ${isActive("/office/activity-log") ? "active" : ""}`}
+            onClick={() => navigate("/office/activity-log")}
+          >
+            <History className="nav-icon" size={20} />
+            <span className="nav-label">Activity Log</span>
+          </button>
         </div>
       </nav>
 
@@ -99,6 +116,9 @@ export default function Sidebar() {
         <button
           className="logout-btn"
           onClick={() => {
+            logActivity(ACTIVITY_TYPES.LOGOUT, {
+              timestamp: new Date().toISOString()
+            })
             localStorage.removeItem("summacapital_token");
             localStorage.removeItem("summacapital_user");
             navigate("/office/login");

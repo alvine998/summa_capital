@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Edit2, ImageIcon, X } from 'lucide-react'
 import { useToast } from '../../../components/Toast/Toast'
+import { formatPriceInput } from '../../../utils/priceFormatter'
 import './style.css'
 
 const mockData = [
-  { id: 1, title: 'Premium Land in Pondok Indah', description: 'Strategic land in a premium area', estimate: 'Rp 4.5B', deadline: '2025-05-30', location: 'South Jakarta', area: '600', status: 'Active' },
-  { id: 2, title: 'Luxury Penthouse SCBD', description: 'Top floor penthouse with panoramic city view', estimate: 'Rp 12B', deadline: '2025-06-15', location: 'Central Jakarta', area: '280', status: 'Active' },
-  { id: 3, title: 'Commercial Space Serpong', description: 'Strategic commercial property in BSD area', estimate: 'Rp 3.2B', deadline: '2025-04-10', location: 'Tangerang', area: '320', status: 'Closed' }
+  { id: 1, title: 'Premium Land in Pondok Indah', description: 'Strategic land in a premium area', estimate: 'Rp 4.5B', deadline: '2025-05-30', location: 'South Jakarta', area: '600', buildingArea: '350', fieldArea: '250', status: 'Active' },
+  { id: 2, title: 'Luxury Penthouse SCBD', description: 'Top floor penthouse with panoramic city view', estimate: 'Rp 12B', deadline: '2025-06-15', location: 'Central Jakarta', area: '280', buildingArea: '270', fieldArea: '10', status: 'Active' },
+  { id: 3, title: 'Commercial Space Serpong', description: 'Strategic commercial property in BSD area', estimate: 'Rp 3.2B', deadline: '2025-04-10', location: 'Tangerang', area: '320', buildingArea: '300', fieldArea: '20', status: 'Closed' }
 ]
 
 export default function EditEarlyAccess() {
@@ -33,7 +34,14 @@ export default function EditEarlyAccess() {
 
   const handleChange = e => {
     const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
+    
+    // Format estimate field with thousand separators
+    let formattedValue = value
+    if (name === 'estimate') {
+      formattedValue = formatPriceInput(value)
+    }
+    
+    setForm(prev => ({ ...prev, [name]: formattedValue }))
     setError('')
   }
 
@@ -116,12 +124,23 @@ export default function EditEarlyAccess() {
 
               <div className="form-row-2">
                 <div className="form-group">
+                  <label className="form-label">Building Area (m²)</label>
+                  <input type="text" name="buildingArea" value={form.buildingArea || ''} onChange={handleChange} className="form-input" placeholder="e.g. 300" disabled={loading} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Field Area (m²)</label>
+                  <input type="text" name="fieldArea" value={form.fieldArea || ''} onChange={handleChange} className="form-input" placeholder="e.g. 200" disabled={loading} />
+                </div>
+              </div>
+
+              <div className="form-row-2">
+                <div className="form-group">
                   <label className="form-label">Estimate Price *</label>
-                  <input type="text" name="estimate" value={form.estimate} onChange={handleChange} className="form-input" placeholder="e.g. Rp 5B" disabled={loading} />
+                  <input type="text" name="estimate" value={form.estimate} onChange={handleChange} className="form-input" placeholder="e.g. 5,000,000,000 or Rp 5B" disabled={loading} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Deadline *</label>
-                  <input type="date" name="deadline" value={form.deadline} onChange={handleChange} className="form-input" disabled={loading} />
+                  <input type="date" name="deadline" value={form.deadline} onChange={handleChange} className="form-input" min={new Date().toISOString().split('T')[0]} disabled={loading} />
                 </div>
               </div>
 

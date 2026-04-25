@@ -21,6 +21,8 @@ import Asset from './pages/Office/Asset'
 import CreateAsset from './pages/Office/Asset/Create'
 import EditAsset from './pages/Office/Asset/Edit'
 import Galeri from './pages/Office/Galeri'
+import Messages from './pages/Office/Messages'
+import ActivityLog from './pages/Office/ActivityLog'
 import Pengguna from './pages/Office/Pengguna'
 import CreatePengguna from './pages/Office/Pengguna/Create'
 import EditPengguna from './pages/Office/Pengguna/Edit'
@@ -28,6 +30,7 @@ import Pengaturan from './pages/Office/Pengaturan'
 import EarlyAccessOffice from './pages/Office/EarlyAccess'
 import CreateEarlyAccess from './pages/Office/EarlyAccess/Create'
 import EditEarlyAccess from './pages/Office/EarlyAccess/Edit'
+import { logActivity, ACTIVITY_TYPES } from './services/activityLog'
 import './App.css'
 
 function AppContent() {
@@ -77,6 +80,8 @@ function AppContent() {
           <Route path="/office/early-access/create" element={<OfficeLayout><CreateEarlyAccess /></OfficeLayout>} />
           <Route path="/office/early-access/edit/:id" element={<OfficeLayout><EditEarlyAccess /></OfficeLayout>} />
           <Route path="/office/galeri" element={<OfficeLayout><Galeri /></OfficeLayout>} />
+          <Route path="/office/messages" element={<OfficeLayout><Messages /></OfficeLayout>} />
+          <Route path="/office/activity-log" element={<OfficeLayout><ActivityLog /></OfficeLayout>} />
           <Route path="/office/pengguna" element={<OfficeLayout><Pengguna /></OfficeLayout>} />
           <Route path="/office/pengguna/create" element={<OfficeLayout><CreatePengguna /></OfficeLayout>} />
           <Route path="/office/pengguna/edit/:id" element={<OfficeLayout><EditPengguna /></OfficeLayout>} />

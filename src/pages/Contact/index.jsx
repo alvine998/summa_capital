@@ -34,6 +34,34 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Save message to localStorage
+    const message = {
+      id: Date.now(),
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      subject: form.subject,
+      message: form.message,
+      timestamp: new Date().toISOString()
+    };
+
+    // Get existing messages
+    const existingMessages = localStorage.getItem('contact_messages');
+    const messages = existingMessages ? JSON.parse(existingMessages) : [];
+    
+    // Add new message
+    messages.push(message);
+    localStorage.setItem('contact_messages', JSON.stringify(messages));
+
+    // Reset form and show success
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    });
     setSubmitted(true);
   };
 

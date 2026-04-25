@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Edit, X, Upload } from 'lucide-react'
+import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { formatPriceInput } from '../../../utils/priceFormatter'
 import './create.css'
 
 // Mock data - in real app, this would come from an API
@@ -14,6 +16,8 @@ const mockAssets = {
     deadline: '2024-12-15',
     location: 'South Jakarta',
     area: '500',
+    buildingArea: '300',
+    fieldArea: '200',
     status: 'Pending'
   },
   2: {
@@ -25,6 +29,8 @@ const mockAssets = {
     deadline: '2024-12-20',
     location: 'South Jakarta',
     area: '200',
+    buildingArea: '180',
+    fieldArea: '20',
     status: 'Pending'
   }
 }
@@ -54,9 +60,16 @@ export default function EditAsset() {
 
   const handleChange = e => {
     const { name, value } = e.target
+    
+    // Format estimate field with thousand separators
+    let formattedValue = value
+    if (name === 'estimate') {
+      formattedValue = formatPriceInput(value)
+    }
+    
     setForm(prev => ({
       ...prev,
-      [name]: value
+      [name]: formattedValue
     }))
     setError('')
   }
@@ -119,6 +132,14 @@ export default function EditAsset() {
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Log activity
+      logActivity(ACTIVITY_TYPES.UPDATE_ASSET, {
+        assetId: form.id,
+        assetTitle: form.title,
+        assetType: form.type,
+        assetLocation: form.location
+      })
 
       // Success
       setSuccess(true)
@@ -264,6 +285,34 @@ export default function EditAsset() {
 
               <div className="form-row">
                 <div className="form-group">
+                  <label className="form-label">Building Area (m²)</label>
+                  <input
+                    type="text"
+                    name="buildingArea"
+                    value={form.buildingArea || ''}
+                    onChange={handleChange}
+                    className="form-input"
+                    placeholder="Example: 300"
+                    disabled={loading || success}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Field Area (m²)</label>
+                  <input
+                    type="text"
+                    name="fieldArea"
+                    value={form.fieldArea || ''}
+                    onChange={handleChange}
+                    className="form-input"
+                    placeholder="Example: 200"
+                    disabled={loading || success}
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
                   <label className="form-label">Estimated Price *</label>
                   <input
                     type="text"
@@ -271,7 +320,7 @@ export default function EditAsset() {
                     value={form.estimate}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Example: Rp 5B"
+                    placeholder="Example: 5,000,000,000 or Rp 5B"
                     disabled={loading || success}
                   />
                 </div>
@@ -284,6 +333,7 @@ export default function EditAsset() {
                     value={form.deadline}
                     onChange={handleChange}
                     className="form-input"
+                    min={new Date().toISOString().split('T')[0]}
                     disabled={loading || success}
                   />
                 </div>

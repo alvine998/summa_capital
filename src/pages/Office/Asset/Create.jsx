@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, X, Upload } from 'lucide-react'
+import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { formatPriceInput } from '../../../utils/priceFormatter'
 import './create.css'
 
 export default function CreateAsset() {
@@ -16,6 +18,8 @@ export default function CreateAsset() {
     deadline: '',
     location: '',
     area: '',
+    buildingArea: '',
+    fieldArea: '',
     status: 'Pending'
   })
 
@@ -24,9 +28,16 @@ export default function CreateAsset() {
 
   const handleChange = e => {
     const { name, value } = e.target
+    
+    // Format estimate field with thousand separators
+    let formattedValue = value
+    if (name === 'estimate') {
+      formattedValue = formatPriceInput(value)
+    }
+    
     setForm(prev => ({
       ...prev,
-      [name]: value
+      [name]: formattedValue
     }))
     setError('')
   }
@@ -89,6 +100,14 @@ export default function CreateAsset() {
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Log activity
+      logActivity(ACTIVITY_TYPES.CREATE_ASSET, {
+        assetTitle: form.title,
+        assetType: form.type,
+        assetLocation: form.location,
+        assetEstimate: form.estimate
+      })
 
       // Success - redirect to asset list
       navigate('/office/asset')
@@ -211,6 +230,34 @@ export default function CreateAsset() {
 
               <div className="form-row">
                 <div className="form-group">
+                  <label className="form-label">Building Area (m²)</label>
+                  <input
+                    type="text"
+                    name="buildingArea"
+                    value={form.buildingArea}
+                    onChange={handleChange}
+                    className="form-input"
+                    placeholder="Example: 300"
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Field Area (m²)</label>
+                  <input
+                    type="text"
+                    name="fieldArea"
+                    value={form.fieldArea}
+                    onChange={handleChange}
+                    className="form-input"
+                    placeholder="Example: 200"
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
                   <label className="form-label">Estimated Price *</label>
                   <input
                     type="text"
@@ -218,7 +265,7 @@ export default function CreateAsset() {
                     value={form.estimate}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Example: Rp 5B"
+                    placeholder="Example: 5,000,000,000 or Rp 5B"
                     disabled={loading}
                   />
                 </div>
@@ -231,6 +278,7 @@ export default function CreateAsset() {
                     value={form.deadline}
                     onChange={handleChange}
                     className="form-input"
+                    min={new Date().toISOString().split('T')[0]}
                     disabled={loading}
                   />
                 </div>

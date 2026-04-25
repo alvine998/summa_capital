@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Gem } from 'lucide-react'
+import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
 import './asset.css'
 
 const assetData = {
@@ -34,6 +35,12 @@ export default function Asset() {
   }
 
   const handleConfirmDelete = () => {
+    // Log activity
+    logActivity(ACTIVITY_TYPES.DELETE_ASSET, {
+      assetId: deleteModal.id,
+      assetTitle: deleteModal.title
+    })
+    
     // Delete functionality would go here (API call)
     // For now, just close the modal
     setDeleteModal({ show: false, id: null, title: '' })

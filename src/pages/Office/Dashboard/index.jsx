@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Activity, Users, TrendingUp, Mail, Gem, User, Image, Settings, MessageCircle, FileText, Hand } from 'lucide-react'
 import Chart from 'react-apexcharts'
+import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
 import './style.css'
 
 export default function Dashboard() {
@@ -87,7 +88,14 @@ export default function Dashboard() {
       return
     }
 
-    setUser(JSON.parse(userData))
+    const parsedUser = JSON.parse(userData)
+    setUser(parsedUser)
+    
+    // Log login activity
+    logActivity(ACTIVITY_TYPES.LOGIN, {
+      userRole: parsedUser.role,
+      timestamp: new Date().toISOString()
+    })
   }, [navigate])
 
   if (!user) return <div className="dashboard-loading">Loading...</div>
