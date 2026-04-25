@@ -37,6 +37,18 @@ export default function Login() {
         return;
       }
 
+      if(form.email !== "admin@summacapital.id"){
+        setError("Invalid email");
+        setLoading(false);
+        return;
+      }
+
+      if(form.password !== "SummaCapital2026"){
+        setError("Invalid password");
+        setLoading(false);
+        return;
+      }
+
       // Simulate successful login
       localStorage.setItem(
         "summacapital_token",
@@ -138,10 +150,6 @@ export default function Login() {
                 {loading ? "Processing..." : "Login"}
               </button>
             </form>
-
-            <div className="login-footer">
-              <p>Demo: use any email with any password</p>
-            </div>
           </div>
         </div>
       </div>
