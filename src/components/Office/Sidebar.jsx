@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, Gem, Image, Users, Settings, LogOut, ChevronDown, Gavel, Sparkles, Mail, History } from "lucide-react";
+import { LayoutDashboard, Gem, Image, Users, Settings, LogOut, ChevronDown, Gavel, Sparkles, Mail, History, FileText } from "lucide-react";
 import { logActivity, ACTIVITY_TYPES } from "../../services/activityLog";
 import "./Sidebar.css";
 
@@ -76,6 +76,14 @@ export default function Sidebar() {
           >
             <Image className="nav-icon" size={20} />
             <span className="nav-label">Gallery</span>
+          </button>
+
+          <button
+            className={`nav-item ${isActive("/office/articles") ? "active" : ""}`}
+            onClick={() => navigate("/office/articles")}
+          >
+            <FileText className="nav-icon" size={20} />
+            <span className="nav-label">Articles</span>
           </button>
 
           <button

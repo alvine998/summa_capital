@@ -35,7 +35,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`navbar${scrolled ? " navbar--scrolled" : ""}${pathname.includes("/bid/detail") || pathname.includes("/early-access/detail") ? " navbar--dark-text" : ""}`}
+      className={`navbar${scrolled ? " navbar--scrolled" : ""}${pathname.includes("/bid/detail") || pathname.includes("/early-access/detail") || pathname.includes("/articles/") ? " navbar--dark-text" : ""}`}
     >
       <div className="navbar__inner">
         {/* Logo */}
@@ -136,6 +136,14 @@ export default function Navbar() {
           >
             Gallery
           </NavLink>
+          <NavLink
+            to="/articles"
+            className={({ isActive }) =>
+              isActive ? "nav-link nav-link--active" : "nav-link"
+            }
+          >
+            Articles
+          </NavLink>
         </nav>
 
         <Link to="/consultation" className="navbar__cta">
@@ -203,6 +211,9 @@ export default function Navbar() {
         </NavLink>
         <NavLink to="/gallery" className="mobile-link" onClick={closeMobile}>
           Gallery
+        </NavLink>
+        <NavLink to="/articles" className="mobile-link" onClick={closeMobile}>
+          Articles
         </NavLink>
         <Link to="/consultation" className="mobile-cta" onClick={closeMobile}>
           Free Consultation

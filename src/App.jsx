@@ -11,6 +11,8 @@ import EarlyAccess from './pages/EarlyAccess'
 import EarlyAccessDetail from './pages/EarlyAccess/Detail'
 import Contact from './pages/Contact'
 import Gallery from './pages/Gallery'
+import Articles from './pages/Articles'
+import ArticleDetail from './pages/Articles/Detail'
 import SebotanAsset from './pages/SebotanAsset'
 import Consultation from './pages/Consultation'
 import Login from './pages/Office/Login'
@@ -30,6 +32,9 @@ import Pengaturan from './pages/Office/Pengaturan'
 import EarlyAccessOffice from './pages/Office/EarlyAccess'
 import CreateEarlyAccess from './pages/Office/EarlyAccess/Create'
 import EditEarlyAccess from './pages/Office/EarlyAccess/Edit'
+import OfficeArticles from './pages/Office/Articles'
+import CreateArticle from './pages/Office/Articles/Create'
+import EditArticle from './pages/Office/Articles/Edit'
 import { logActivity, ACTIVITY_TYPES } from './services/activityLog'
 import './App.css'
 
@@ -64,6 +69,8 @@ function AppContent() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/asset/sebaran" element={<SebotanAsset />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/articles/:id" element={<ArticleDetail />} />
           <Route path="/consultation" element={<Consultation />} />
 
           {/* Office Auth Routes (No Sidebar) */}
@@ -79,6 +86,9 @@ function AppContent() {
           <Route path="/office/early-access" element={<OfficeLayout><EarlyAccessOffice /></OfficeLayout>} />
           <Route path="/office/early-access/create" element={<OfficeLayout><CreateEarlyAccess /></OfficeLayout>} />
           <Route path="/office/early-access/edit/:id" element={<OfficeLayout><EditEarlyAccess /></OfficeLayout>} />
+          <Route path="/office/articles" element={<OfficeLayout><OfficeArticles /></OfficeLayout>} />
+          <Route path="/office/articles/create" element={<OfficeLayout><CreateArticle /></OfficeLayout>} />
+          <Route path="/office/articles/edit/:id" element={<OfficeLayout><EditArticle /></OfficeLayout>} />
           <Route path="/office/galeri" element={<OfficeLayout><Galeri /></OfficeLayout>} />
           <Route path="/office/messages" element={<OfficeLayout><Messages /></OfficeLayout>} />
           <Route path="/office/activity-log" element={<OfficeLayout><ActivityLog /></OfficeLayout>} />
