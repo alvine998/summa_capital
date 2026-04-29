@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, CheckCircle } from "lucide-react";
+import messageService from "../../services/messageService";
 import "../PageShared.css";
 import "./style.css";
 
@@ -32,37 +33,45 @@ export default function Contact() {
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Save message to localStorage
-    const message = {
-      id: Date.now(),
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      subject: form.subject,
-      message: form.message,
-      timestamp: new Date().toISOString()
-    };
+    try {
+      const messageData = {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message,
+      };
 
-    // Get existing messages
-    const existingMessages = localStorage.getItem('contact_messages');
-    const messages = existingMessages ? JSON.parse(existingMessages) : [];
-    
-    // Add new message
-    messages.push(message);
-    localStorage.setItem('contact_messages', JSON.stringify(messages));
+      // Try to send via API, fallback to localStorage
+      await messageService.submit(messageData);
 
-    // Reset form and show success
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    });
-    setSubmitted(true);
+      // Also save locally for backup
+      const message = {
+        id: Date.now(),
+        ...messageData,
+        timestamp: new Date().toISOString()
+      };
+      const existingMessages = localStorage.getItem('contact_messages');
+      const messages = existingMessages ? JSON.parse(existingMessages) : [];
+      messages.push(message);
+      localStorage.setItem('contact_messages', JSON.stringify(messages));
+
+      // Reset form and show success
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting message:', error);
+      setSubmitted(true);
+    }
   };
 
   return (

@@ -2,12 +2,17 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Activity, Users, TrendingUp, Mail, Gem, User, Image, Settings, MessageCircle, FileText, Hand } from 'lucide-react'
 import Chart from 'react-apexcharts'
-import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { dashboardService, activityLogService } from '../../../services/dashboardService'
 import './style.css'
 
 export default function Dashboard() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
+  const [stats, setStats] = useState(null)
+  const [assetTrends, setAssetTrends] = useState({ labels: [], data: [] })
+  const [assetDistribution, setAssetDistribution] = useState({ labels: [], data: [] })
+  const [userGrowth, setUserGrowth] = useState({ labels: [], data: [] })
+  const [recentActivity, setRecentActivity] = useState([])
 
   // Asset Trends Data
   const assetTrendsOptions = {
@@ -19,7 +24,7 @@ export default function Dashboard() {
     stroke: { curve: 'smooth', width: 2 },
     colors: ['#C9A84C'],
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      categories: assetTrends.labels,
       labels: { style: { colors: '#666' } }
     },
     yaxis: {
@@ -32,14 +37,14 @@ export default function Dashboard() {
   const assetTrendsSeries = [
     {
       name: 'Active Assets',
-      data: [3, 4, 5, 5, 6, 6]
+      data: assetTrends.data
     }
   ]
 
   // Asset Distribution Data
   const assetDistributionOptions = {
     chart: { type: 'donut' },
-    labels: ['Available', 'Auction', 'Early Access', 'Sold'],
+    labels: assetDistribution.labels,
     colors: ['#2E7D32', '#C9A84C', '#A8843D', '#6B6B6B'],
     plotOptions: {
       pie: {
@@ -51,7 +56,7 @@ export default function Dashboard() {
     tooltip: { theme: 'light' }
   }
 
-  const assetDistributionSeries = [45, 30, 15, 10]
+  const assetDistributionSeries = assetDistribution.data
 
   // User Growth Data
   const userGrowthOptions = {
@@ -62,7 +67,7 @@ export default function Dashboard() {
     },
     colors: ['#A8843D'],
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      categories: userGrowth.labels,
       labels: { style: { colors: '#666' } }
     },
     yaxis: {
@@ -75,7 +80,7 @@ export default function Dashboard() {
   const userGrowthSeries = [
     {
       name: 'New Users',
-      data: [25, 35, 42, 50, 60, 75]
+      data: userGrowth.data
     }
   ]
 
@@ -88,14 +93,54 @@ export default function Dashboard() {
       return
     }
 
-    const parsedUser = JSON.parse(userData)
-    setUser(parsedUser)
+    try {
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
+    } catch (err) {
+      console.error('Failed to parse user data:', err)
+      localStorage.removeItem('summacapital_token')
+      localStorage.removeItem('summacapital_user')
+      navigate('/office/login')
+      return
+    }
     
-    // Log login activity
-    logActivity(ACTIVITY_TYPES.LOGIN, {
-      userRole: parsedUser.role,
-      timestamp: new Date().toISOString()
-    })
+    // Fetch dashboard data from API
+    const fetchDashboardData = async () => {
+      try {
+        const [statsData, trendsData, distData, growthData, activityData] = await Promise.all([
+          dashboardService.getStats(),
+          dashboardService.getAssetTrends(),
+          dashboardService.getAssetDistribution(),
+          dashboardService.getUserGrowth(),
+          activityLogService.list(1, 5)
+        ])
+
+        if (statsData) setStats(statsData || {})
+        if (trendsData) setAssetTrends({
+          labels: trendsData?.labels || [],
+          data: trendsData?.data || []
+        })
+        if (distData) setAssetDistribution({
+          labels: distData?.labels || [],
+          data: distData?.data || []
+        })
+        if (growthData) setUserGrowth({
+          labels: growthData?.labels || [],
+          data: growthData?.data || []
+        })
+        setRecentActivity(Array.isArray(activityData) ? activityData : (activityData?.data || []))
+      } catch (error) {
+        console.warn('Failed to fetch dashboard data:', error.message)
+        // Set default empty data structures to prevent chart errors
+        setStats({})
+        setAssetTrends({ labels: [], data: [] })
+        setAssetDistribution({ labels: [], data: [] })
+        setUserGrowth({ labels: [], data: [] })
+        setRecentActivity([])
+      }
+    }
+
+    fetchDashboardData()
   }, [navigate])
 
   if (!user) return <div className="dashboard-loading">Loading...</div>
@@ -119,22 +164,22 @@ export default function Dashboard() {
           <div className="dashboard-stats">
             <div className="stat-box">
               <Activity className="stat-icon" size={24} />
-              <h3>6</h3>
+              <h3>{stats?.activeAssets ?? '—'}</h3>
               <p>Active Assets</p>
             </div>
             <div className="stat-box">
               <Users className="stat-icon" size={24} />
-              <h3>234</h3>
+              <h3>{stats?.registeredUsers ?? '—'}</h3>
               <p>Registered Users</p>
             </div>
             <div className="stat-box">
               <TrendingUp className="stat-icon" size={24} />
-              <h3>Rp 2T+</h3>
+              <h3>{stats?.totalAUM ?? '—'}</h3>
               <p>Total AUM</p>
             </div>
             <div className="stat-box">
               <Mail className="stat-icon" size={24} />
-              <h3>12</h3>
+              <h3>{stats?.newMessages ?? '—'}</h3>
               <p>New Messages</p>
             </div>
           </div>
@@ -195,22 +240,16 @@ export default function Dashboard() {
           <div className="dashboard-activity">
             <h3>Recent Activity</h3>
             <div className="activity-list">
-              <div className="activity-item">
-                <span className="activity-time">2 hours ago</span>
-                <span className="activity-text">New asset added: Commercial Building Jakarta</span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-time">5 hours ago</span>
-                <span className="activity-text">New user registered: user@example.com</span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-time">1 day ago</span>
-                <span className="activity-text">Auction closed: Bekasi Industrial Estate</span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-time">2 days ago</span>
-                <span className="activity-text">Gallery updated with 5 new photos</span>
-              </div>
+              {recentActivity.length === 0 ? (
+                <p className="no-activity">No recent activity</p>
+              ) : (
+                recentActivity.map(activity => (
+                  <div key={activity.id} className="activity-item">
+                    <span className="activity-time">{new Date(activity.timestamp || activity.createdAt).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })}</span>
+                    <span className="activity-text">{activity.label || activity.description || activity.action}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

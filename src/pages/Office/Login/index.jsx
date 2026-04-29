@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import authService from "../../../services/authService";
 import "./style.css";
 
 export default function Login() {
@@ -27,9 +28,6 @@ export default function Login() {
     setError("");
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       // Basic validation
       if (!form.email || !form.password) {
         setError("Email and password are required");
@@ -37,34 +35,19 @@ export default function Login() {
         return;
       }
 
-      if(form.email !== "admin@summacapital.id"){
-        setError("Invalid email");
-        setLoading(false);
-        return;
+      // Call API or use fallback dummy data
+      const data = await authService.login(form.email, form.password, form.rememberMe);
+
+      if (data?.token && data?.user) {
+        // Save token and user data
+        localStorage.setItem("summacapital_token", data.token);
+        localStorage.setItem("summacapital_user", JSON.stringify(data.user));
+        navigate("/office/dashboard");
+      } else {
+        setError("Login failed. Please check your credentials.");
       }
-
-      if(form.password !== "SummaCapital2026"){
-        setError("Invalid password");
-        setLoading(false);
-        return;
-      }
-
-      // Simulate successful login
-      localStorage.setItem(
-        "summacapital_token",
-        "mock-jwt-token-" + Date.now(),
-      );
-      localStorage.setItem(
-        "summacapital_user",
-        JSON.stringify({
-          email: form.email,
-          name: form.email.split("@")[0],
-        }),
-      );
-
-      navigate("/office/dashboard");
     } catch (err) {
-      setError("An error occurred. Try again.");
+      setError(err.response?.data?.message || "An error occurred. Try again.");
     } finally {
       setLoading(false);
     }

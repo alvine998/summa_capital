@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, X, Upload } from 'lucide-react'
-import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { useToast } from '../../../components/Toast/Toast'
+import assetService from '../../../services/assetService'
 import { formatPriceInput } from '../../../utils/priceFormatter'
 import './create.css'
 
 export default function CreateAsset() {
   const navigate = useNavigate()
+  const { toasts, addToast, removeToast, Toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [photos, setPhotos] = useState([])
@@ -98,21 +100,31 @@ export default function CreateAsset() {
         return
       }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-
-      // Log activity
-      logActivity(ACTIVITY_TYPES.CREATE_ASSET, {
-        assetTitle: form.title,
-        assetType: form.type,
-        assetLocation: form.location,
-        assetEstimate: form.estimate
+      // Build FormData with photos
+      const formData = new FormData()
+      formData.append('title', form.title)
+      formData.append('type', form.type)
+      formData.append('description', form.description)
+      formData.append('estimate', form.estimate)
+      formData.append('deadline', form.deadline)
+      formData.append('location', form.location)
+      formData.append('area', form.area)
+      formData.append('buildingArea', form.buildingArea)
+      formData.append('fieldArea', form.fieldArea)
+      formData.append('status', form.status)
+      
+      // Add photos
+      photos.forEach(photo => {
+        formData.append('images', photo.file)
       })
 
-      // Success - redirect to asset list
-      navigate('/office/asset')
+      // Call API
+      await assetService.create(formData)
+      addToast('Asset created successfully!', 'success')
+      setTimeout(() => navigate('/office/asset'), 500)
     } catch (err) {
-      setError("An error occurred while saving the asset")
+      console.error('Failed to create asset:', err)
+      setError(err.response?.data?.message || "An error occurred while saving the asset")
     } finally {
       setLoading(false)
     }
@@ -120,6 +132,7 @@ export default function CreateAsset() {
 
   return (
     <div className="office-page">
+      <Toast toasts={toasts} removeToast={removeToast} />
       <div className="office-header">
         <div className="office-header-content">
           <h1 className="office-header-title"><Plus className="inline-icon" size={28} /> Add New Asset</h1>

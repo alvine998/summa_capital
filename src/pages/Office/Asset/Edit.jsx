@@ -1,46 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Edit, X, Upload } from 'lucide-react'
-import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { useToast } from '../../../components/Toast/Toast'
+import assetService from '../../../services/assetService'
 import { formatPriceInput } from '../../../utils/priceFormatter'
 import './create.css'
-
-// Mock data - in real app, this would come from an API
-const mockAssets = {
-  1: {
-    id: 1,
-    title: 'Premium Land in Senayan',
-    type: 'Land',
-    description: 'Strategic location with easy access to commercial areas',
-    estimate: 'Rp 5B',
-    deadline: '2024-12-15',
-    location: 'South Jakarta',
-    area: '500',
-    buildingArea: '300',
-    fieldArea: '200',
-    status: 'Pending'
-  },
-  2: {
-    id: 2,
-    title: 'Luxury Apartment South Jakarta',
-    type: 'Apartment',
-    description: 'Apartment with complete facilities in the city center',
-    estimate: 'Rp 3.2B',
-    deadline: '2024-12-20',
-    location: 'South Jakarta',
-    area: '200',
-    buildingArea: '180',
-    fieldArea: '20',
-    status: 'Pending'
-  }
-}
 
 export default function EditAsset() {
   const navigate = useNavigate()
   const { id } = useParams()
+  const { toasts, addToast, removeToast, Toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
   const [form, setForm] = useState(null)
   const [photos, setPhotos] = useState([])
 
@@ -48,14 +19,17 @@ export default function EditAsset() {
   const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
 
   useEffect(() => {
-    // Simulate loading asset data
-    const asset = mockAssets[id]
-    if (asset) {
-      setForm(asset)
-    } else {
-      setError('Asset not found')
-      setTimeout(() => navigate('/office/asset'), 2000)
+    const fetchAsset = async () => {
+      try {
+        const asset = await assetService.getPublic(id)
+        setForm(asset)
+      } catch (err) {
+        console.error('Failed to load asset:', err)
+        setError('Asset not found')
+        setTimeout(() => navigate('/office/asset'), 2000)
+      }
     }
+    if (id) fetchAsset()
   }, [id, navigate])
 
   const handleChange = e => {
@@ -130,32 +104,40 @@ export default function EditAsset() {
         return
       }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-
-      // Log activity
-      logActivity(ACTIVITY_TYPES.UPDATE_ASSET, {
-        assetId: form.id,
-        assetTitle: form.title,
-        assetType: form.type,
-        assetLocation: form.location
+      // Build FormData with photos
+      const formData = new FormData()
+      formData.append('title', form.title)
+      formData.append('type', form.type)
+      formData.append('description', form.description)
+      formData.append('estimate', form.estimate)
+      formData.append('deadline', form.deadline)
+      formData.append('location', form.location)
+      formData.append('area', form.area)
+      formData.append('buildingArea', form.buildingArea)
+      formData.append('fieldArea', form.fieldArea)
+      formData.append('status', form.status)
+      
+      // Add new photos only
+      photos.forEach(photo => {
+        formData.append('images', photo.file)
       })
 
-      // Success
-      setSuccess(true)
-      setTimeout(() => {
-        navigate('/office/asset')
-      }, 1500)
+      // Call API
+      await assetService.update(id, formData)
+      addToast('Asset updated successfully!', 'success')
+      setTimeout(() => navigate('/office/asset'), 500)
     } catch (err) {
-      setError('An error occurred while saving the asset')
+      console.error('Failed to update asset:', err)
+      setError(err.response?.data?.message || 'An error occurred while saving the asset')
     } finally {
       setLoading(false)
     }
   }
 
-  if (!form) {
+  if (!form && !error) {
     return (
       <div className="office-page">
+        <Toast toasts={toasts} removeToast={removeToast} />
         <div className="office-header">
           <div className="office-header-content">
             <h1 className="office-header-title">Edit Asset</h1>
@@ -174,6 +156,7 @@ export default function EditAsset() {
 
   return (
     <div className="office-page">
+      <Toast toasts={toasts} removeToast={removeToast} />
       <div className="office-header">
         <div className="office-header-content">
           <h1 className="office-header-title"><Edit className="inline-icon" size={28} /> Edit Asset</h1>
@@ -187,7 +170,6 @@ export default function EditAsset() {
             <p className="form-desc">Update asset information</p>
 
             {error && <div className="form-error">{error}</div>}
-            {success && <div className="success-message">Asset updated successfully!</div>}
 
             <form onSubmit={handleSubmit} className="asset-form">
               <div className="form-row">
@@ -200,7 +182,7 @@ export default function EditAsset() {
                     onChange={handleChange}
                     className="form-input"
                     placeholder="Example: Premium Land in Senayan"
-                    disabled={loading || success}
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -213,7 +195,7 @@ export default function EditAsset() {
                     value={form.type}
                     onChange={handleChange}
                     className="form-input"
-                    disabled={loading || success}
+                    disabled={loading}
                   >
                     <option value="Land">Land</option>
                     <option value="Building">Building</option>
@@ -231,7 +213,7 @@ export default function EditAsset() {
                     value={form.status}
                     onChange={handleChange}
                     className="form-input"
-                    disabled={loading || success}
+                    disabled={loading}
                   >
                     <option value="Pending">Pending</option>
                     <option value="Publish">Published</option>
@@ -250,7 +232,7 @@ export default function EditAsset() {
                     className="form-input form-textarea"
                     placeholder="Complete description about the asset..."
                     rows="4"
-                    disabled={loading || success}
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -265,7 +247,7 @@ export default function EditAsset() {
                     onChange={handleChange}
                     className="form-input"
                     placeholder="Example: South Jakarta"
-                    disabled={loading || success}
+                    disabled={loading}
                   />
                 </div>
 
@@ -278,7 +260,7 @@ export default function EditAsset() {
                     onChange={handleChange}
                     className="form-input"
                     placeholder="Example: 500"
-                    disabled={loading || success}
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -293,7 +275,7 @@ export default function EditAsset() {
                     onChange={handleChange}
                     className="form-input"
                     placeholder="Example: 300"
-                    disabled={loading || success}
+                    disabled={loading}
                   />
                 </div>
 

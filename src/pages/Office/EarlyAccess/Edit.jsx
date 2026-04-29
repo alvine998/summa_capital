@@ -2,14 +2,9 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Edit2, ImageIcon, X } from 'lucide-react'
 import { useToast } from '../../../components/Toast/Toast'
+import earlyAccessService from '../../../services/earlyAccessService'
 import { formatPriceInput } from '../../../utils/priceFormatter'
 import './style.css'
-
-const mockData = [
-  { id: 1, title: 'Premium Land in Pondok Indah', description: 'Strategic land in a premium area', estimate: 'Rp 4.5B', deadline: '2025-05-30', location: 'South Jakarta', area: '600', buildingArea: '350', fieldArea: '250', status: 'Active' },
-  { id: 2, title: 'Luxury Penthouse SCBD', description: 'Top floor penthouse with panoramic city view', estimate: 'Rp 12B', deadline: '2025-06-15', location: 'Central Jakarta', area: '280', buildingArea: '270', fieldArea: '10', status: 'Active' },
-  { id: 3, title: 'Commercial Space Serpong', description: 'Strategic commercial property in BSD area', estimate: 'Rp 3.2B', deadline: '2025-04-10', location: 'Tangerang', area: '320', buildingArea: '300', fieldArea: '20', status: 'Closed' }
-]
 
 export default function EditEarlyAccess() {
   const navigate = useNavigate()
@@ -22,14 +17,18 @@ export default function EditEarlyAccess() {
   const [newImages, setNewImages] = useState([])
 
   useEffect(() => {
-    const item = mockData.find(d => d.id === parseInt(id))
-    if (item) {
-      setForm(item)
-      setExistingImages(item.images || [])
-    } else {
-      setError('Item not found')
-      setTimeout(() => navigate('/office/early-access'), 2000)
+    const fetchItem = async () => {
+      try {
+        const item = await earlyAccessService.getPublic(id)
+        setForm(item)
+        setExistingImages(item.images || [])
+      } catch (err) {
+        console.error('Failed to load early access item:', err)
+        setError('Item not found')
+        setTimeout(() => navigate('/office/early-access'), 2000)
+      }
     }
+    if (id) fetchItem()
   }, [id, navigate])
 
   const handleChange = e => {
@@ -69,11 +68,30 @@ export default function EditEarlyAccess() {
     }
     setLoading(true)
     try {
-      await new Promise(r => setTimeout(r, 1000))
+      // Build FormData with images
+      const formData = new FormData()
+      formData.append('title', form.title)
+      formData.append('description', form.description)
+      formData.append('estimate', form.estimate)
+      formData.append('deadline', form.deadline)
+      formData.append('location', form.location)
+      formData.append('area', form.area)
+      formData.append('buildingArea', form.buildingArea)
+      formData.append('fieldArea', form.fieldArea)
+      formData.append('status', form.status)
+      
+      // Add new images only
+      newImages.forEach(img => {
+        formData.append('images', img.file)
+      })
+
+      // Call API
+      await earlyAccessService.update(id, formData)
       addToast('Early Access item updated successfully!', 'success')
       setTimeout(() => navigate('/office/early-access'), 500)
-    } catch {
-      setError('An error occurred while saving')
+    } catch (err) {
+      console.error('Failed to update early access item:', err)
+      setError(err.response?.data?.message || 'An error occurred while saving')
     } finally {
       setLoading(false)
     }

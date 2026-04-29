@@ -1,36 +1,39 @@
 import { useState, useEffect } from 'react'
-import { Mail, Trash2, Eye, X, ArrowLeft } from 'lucide-react'
+import { Mail, Trash2, Eye, X } from 'lucide-react'
 import Toast, { useToast } from '../../../components/Toast/Toast'
-import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { messageService } from '../../../services/messageService'
 import './style.css'
 
 export default function Messages() {
   const { toasts, addToast, removeToast, Toast: ToastComponent } = useToast()
   const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterSubject, setFilterSubject] = useState('All')
   const [deleteModal, setDeleteModal] = useState({ show: false, id: null, senderName: '' })
   const [viewModal, setViewModal] = useState({ show: false, message: null })
 
-  // Load messages from localStorage on component mount
-  useEffect(() => {
-    const savedMessages = localStorage.getItem('contact_messages')
-    if (savedMessages) {
-      try {
-        const parsedMessages = JSON.parse(savedMessages)
-        // Sort by date (newest first)
-        setMessages(parsedMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)))
-      } catch (error) {
-        console.error('Error loading messages:', error)
-      }
+  const subjects = ['All', 'Pertanyaan', 'Pengaduan', 'Kerjasama', 'Informasi', 'Lainnya']
+
+  const fetchMessages = async () => {
+    try {
+      setLoading(true)
+      const result = await messageService.list(1, 100)
+      setMessages(Array.isArray(result) ? result : (result?.data || []))
+    } catch (err) {
+      addToast('Failed to load messages', 'error')
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    fetchMessages()
   }, [])
 
-  const subjects = ['All', 'Investment Consultation', 'Auction Information', 'Early Access Program', 'Partnership', 'Other']
-
   const filteredMessages = messages.filter(msg => {
-    const matchSearch = msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       msg.email.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchSearch = (msg.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       (msg.email || '').toLowerCase().includes(searchTerm.toLowerCase())
     const matchSubject = filterSubject === 'All' || msg.subject === filterSubject
     return matchSearch && matchSubject
   })
@@ -39,21 +42,16 @@ export default function Messages() {
     setDeleteModal({ show: true, id, senderName: name })
   }
 
-  const handleConfirmDelete = () => {
-    setMessages(prevMessages => prevMessages.filter(msg => msg.id !== deleteModal.id))
-    
-    // Update localStorage
-    const allMessages = messages.filter(msg => msg.id !== deleteModal.id)
-    localStorage.setItem('contact_messages', JSON.stringify(allMessages))
-    
-    // Log activity
-    logActivity(ACTIVITY_TYPES.DELETE_MESSAGE, {
-      messageId: deleteModal.id,
-      senderName: deleteModal.senderName
-    })
-    
-    setDeleteModal({ show: false, id: null, senderName: '' })
-    addToast('Message deleted successfully!', 'success')
+  const handleConfirmDelete = async () => {
+    try {
+      await messageService.delete(deleteModal.id)
+      setMessages(prev => prev.filter(msg => msg.id !== deleteModal.id))
+      addToast('Message deleted successfully!', 'success')
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to delete message', 'error')
+    } finally {
+      setDeleteModal({ show: false, id: null, senderName: '' })
+    }
   }
 
   const handleCancelDelete = () => {
@@ -61,12 +59,6 @@ export default function Messages() {
   }
 
   const handleViewMessage = (message) => {
-    // Log activity
-    logActivity(ACTIVITY_TYPES.VIEW_MESSAGE, {
-      messageId: message.id,
-      senderName: message.name,
-      subject: message.subject
-    })
     setViewModal({ show: true, message })
   }
 
@@ -123,7 +115,9 @@ export default function Messages() {
 
           {/* Messages List */}
           <div className="messages-list">
-            {filteredMessages.length === 0 ? (
+            {loading ? (
+              <div className="loading-state">Loading messages...</div>
+            ) : filteredMessages.length === 0 ? (
               <div className="empty-state">
                 <Mail size={48} className="empty-icon" />
                 <p className="empty-text">
@@ -144,7 +138,7 @@ export default function Messages() {
                     <div className="col-name">{msg.name}</div>
                     <div className="col-subject">{msg.subject}</div>
                     <div className="col-email">{msg.email}</div>
-                    <div className="col-date">{formatDate(msg.timestamp)}</div>
+                    <div className="col-date">{formatDate(msg.createdAt || msg.timestamp)}</div>
                     <div className="col-actions">
                       <button
                         className="action-btn view-btn"
@@ -198,7 +192,7 @@ export default function Messages() {
               </div>
               <div className="detail-group">
                 <label className="detail-label">Date</label>
-                <p className="detail-value">{formatDate(viewModal.message.timestamp)}</p>
+                <p className="detail-value">{formatDate(viewModal.message.createdAt || viewModal.message.timestamp)}</p>
               </div>
               <div className="detail-group">
                 <label className="detail-label">Message</label>

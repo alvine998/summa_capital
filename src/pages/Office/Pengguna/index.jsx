@@ -1,28 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users as UsersIcon, X } from 'lucide-react'
 import Toast, { useToast } from '../../../components/Toast/Toast'
-import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { userService } from '../../../services/userService'
 import './style.css'
-
-const initialUserData = [
-  { id: 1, name: 'Alvin Reyoga', email: 'alvin@summacapital.co.id', role: 'Admin', status: 'Aktif', joinDate: '15 Jan 2024' },
-  { id: 2, name: 'Budi Santoso', email: 'budi@summacapital.co.id', role: 'Manager', status: 'Aktif', joinDate: '20 Feb 2024' },
-  { id: 3, name: 'Citra Dewi', email: 'citra@summacapital.co.id', role: 'Staff', status: 'Aktif', joinDate: '10 Mar 2024' },
-  { id: 4, name: 'Diah Kusuma', email: 'diah@summacapital.co.id', role: 'Staff', status: 'Nonaktif', joinDate: '5 Apr 2024' },
-  { id: 5, name: 'Eka Putri', email: 'eka@summacapital.co.id', role: 'Manager', status: 'Aktif', joinDate: '12 May 2024' }
-]
 
 export default function Users() {
   const navigate = useNavigate()
   const { toasts, addToast, removeToast, Toast: ToastComponent } = useToast()
-  const [userData, setUserData] = useState(initialUserData)
+  const [userData, setUserData] = useState([])
+  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterRole, setFilterRole] = useState('All')
   const [deleteModal, setDeleteModal] = useState({ show: false, id: null, name: '' })
 
   const roles = ['All', 'Admin', 'Manager', 'Staff']
-  
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true)
+      const result = await userService.list(1, 100)
+      setUserData(Array.isArray(result) ? result : (result?.data || []))
+    } catch (err) {
+      addToast('Failed to load users', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
   const filteredUsers = userData.filter(user => {
     const matchSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                        user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,19 +43,16 @@ export default function Users() {
     setDeleteModal({ show: true, id, name })
   }
 
-  const handleConfirmDelete = () => {
-    const deletedUser = userData.find(u => u.id === deleteModal.id)
-    setUserData(prevData => prevData.filter(user => user.id !== deleteModal.id))
-    
-    // Log activity
-    logActivity(ACTIVITY_TYPES.DELETE_USER, {
-      userId: deleteModal.id,
-      userName: deleteModal.name,
-      userRole: deletedUser?.role
-    })
-    
-    setDeleteModal({ show: false, id: null, name: '' })
-    addToast('User deleted successfully!', 'success')
+  const handleConfirmDelete = async () => {
+    try {
+      await userService.delete(deleteModal.id)
+      setUserData(prev => prev.filter(user => user.id !== deleteModal.id))
+      addToast('User deleted successfully!', 'success')
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to delete user', 'error')
+    } finally {
+      setDeleteModal({ show: false, id: null, name: '' })
+    }
   }
 
   const handleCancelDelete = () => {
@@ -87,62 +93,66 @@ export default function Users() {
           </div>
         </div>
 
-        <div className="users-table-wrapper">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map(user => (
-                <tr key={user.id}>
-                  <td>
-                    <div className="user-cell">
-                      <div className="user-avatar">{user.name.charAt(0)}</div>
-                      <span>{user.name}</span>
-                    </div>
-                  </td>
-                  <td>{user.email}</td>
-                  <td>
-                    <span className={`role-badge ${user.role.toLowerCase()}`}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`status-badge ${user.status.toLowerCase()}`}>
-                      {user.status}
-                    </span>
-                  </td>
-                  <td>{user.joinDate}</td>
-                  <td>
-                    <div className="action-buttons">
-                      <button 
-                        className="action-btn-small edit" 
-                        onClick={() => navigate(`/office/pengguna/edit/${user.id}`)}
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        className="action-btn-small delete" 
-                        onClick={() => handleDeleteClick(user.id, user.name)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
+        {loading ? (
+          <div className="loading-state">Loading users...</div>
+        ) : (
+          <div className="users-table-wrapper">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredUsers.map(user => (
+                  <tr key={user.id}>
+                    <td>
+                      <div className="user-cell">
+                        <div className="user-avatar">{user.name.charAt(0)}</div>
+                        <span>{user.name}</span>
+                      </div>
+                    </td>
+                    <td>{user.email}</td>
+                    <td>
+                      <span className={`role-badge ${(user.role || '').toLowerCase()}`}>
+                        {user.role}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`status-badge ${(user.status || '').toLowerCase()}`}>
+                        {user.status}
+                      </span>
+                    </td>
+                    <td>{user.joinDate ? new Date(user.joinDate).toLocaleDateString('id-ID') : '-'}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button 
+                          className="action-btn-small edit" 
+                          onClick={() => navigate(`/office/pengguna/edit/${user.id}`)}
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          className="action-btn-small delete" 
+                          onClick={() => handleDeleteClick(user.id, user.name)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-        {filteredUsers.length === 0 && (
+        {!loading && filteredUsers.length === 0 && (
           <div className="empty-state">
             <div className="empty-icon">🔍</div>
             <h3 className="empty-title">No users found</h3>

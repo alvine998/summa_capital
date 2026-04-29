@@ -1,43 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Settings as SettingsIcon, User, Lock, Building2, Briefcase, HelpCircle, Gift, Plus, Trash2, X } from 'lucide-react'
 import { useToast } from '../../../components/Toast/Toast'
+import { settingsService } from '../../../services/settingsService'
 import './style.css'
-
-const initialProfile = {
-  name: 'Summa Capital',
-  slogan: 'Your Trusted Asset Partner',
-  vision: '',
-  mission: '',
-  values: '',
-  ourStory: 'Trusted asset management company with more than 15 years of experience',
-  address: 'Jl. Sudirman No. 123, South Jakarta',
-  phone: '(021) 5555-1234',
-  email: 'info@summacapital.co.id',
-  established: '2009',
-  yearHistory: [
-    { id: 1, year: '2009', description: 'Summa Capital was founded' }
-  ]
-}
-
-const initialOrganization = [
-  { id: 1, name: 'John Doe', position: 'CEO', description: 'Leading the company since 2009' },
-  { id: 2, name: 'Jane Smith', position: 'CFO', description: 'Managing finances and investments' }
-]
-
-const initialServices = [
-  { id: 1, title: 'Asset Management', description: 'Professional management of your valuable assets', icon: '💼' },
-  { id: 2, title: 'Investment Consulting', description: 'Expert advice on investment opportunities', icon: '📈' }
-]
-
-const initialKnowUs = [
-  { id: 1, title: 'Social Media', description: 'Follow us on Instagram, LinkedIn, and more', icon: '📱' },
-  { id: 2, title: 'Referral', description: 'Referred by a trusted friend or colleague', icon: '🤝' }
-]
-
-const initialBenefits = [
-  { id: 1, title: 'Pre-Market Access', module: 'Early Access', description: 'Get information on selected assets before they are opened to the general market.', icon: '🔐' },
-  { id: 2, title: 'Exclusive Pricing', module: 'Early Access', description: 'Enjoy more competitive pricing and investment terms.', icon: '💎' },
-]
 
 const EMPTY_ORG = { name: '', position: '', description: '' }
 const EMPTY_SERVICE = { title: '', description: '', icon: '' }
@@ -50,34 +15,64 @@ export default function Settings() {
   const { toasts, addToast, removeToast, Toast } = useToast()
 
   const [activeSection, setActiveSection] = useState('profile')
+  const [loading, setLoading] = useState(true)
 
   // Company Profile
-  const [profile, setProfile] = useState(initialProfile)
+  const [profile, setProfile] = useState({ yearHistory: [] })
   const [isEditing, setIsEditing] = useState(false)
-  const [editedProfile, setEditedProfile] = useState(initialProfile)
+  const [editedProfile, setEditedProfile] = useState({ yearHistory: [] })
 
   // Organization
-  const [organization, setOrganization] = useState(initialOrganization)
+  const [organization, setOrganization] = useState([])
   const [orgModal, setOrgModal] = useState({ show: false, mode: 'create', data: null })
   const [orgForm, setOrgForm] = useState(EMPTY_ORG)
 
   // Services
-  const [services, setServices] = useState(initialServices)
+  const [services, setServices] = useState([])
   const [serviceModal, setServiceModal] = useState({ show: false, mode: 'create', data: null })
   const [serviceForm, setServiceForm] = useState(EMPTY_SERVICE)
 
   // Know Us
-  const [knowUs, setKnowUs] = useState(initialKnowUs)
+  const [knowUs, setKnowUs] = useState([])
   const [knowUsModal, setKnowUsModal] = useState({ show: false, mode: 'create', data: null })
   const [knowUsForm, setKnowUsForm] = useState(EMPTY_KNOWUS)
 
   // Benefits
-  const [benefits, setBenefits] = useState(initialBenefits)
+  const [benefits, setBenefits] = useState([])
   const [benefitModal, setBenefitModal] = useState({ show: false, mode: 'create', data: null })
   const [benefitForm, setBenefitForm] = useState(EMPTY_BENEFIT)
 
   // Shared delete modal
   const [deleteModal, setDeleteModal] = useState({ show: false, type: '', id: null, name: '' })
+
+  useEffect(() => {
+    const loadAll = async () => {
+      try {
+        setLoading(true)
+        const [p, org, svc, ku, ben] = await Promise.all([
+          settingsService.getProfile(),
+          settingsService.getOrganization(),
+          settingsService.getServices(),
+          settingsService.getKnowUs(),
+          settingsService.getBenefits(),
+        ])
+        const profileData = (p?.data || p || {})
+        const yearHistoryArray = Array.isArray(profileData.yearHistory) ? profileData.yearHistory : []
+        setProfile({ ...profileData, yearHistory: yearHistoryArray })
+        setEditedProfile({ ...profileData, yearHistory: yearHistoryArray })
+        setOrganization(Array.isArray(org) ? org : (org?.data || []))
+        setServices(Array.isArray(svc) ? svc : (svc?.data || []))
+        setKnowUs(Array.isArray(ku) ? ku : (ku?.data || []))
+        setBenefits(Array.isArray(ben) ? ben : (ben?.data || []))
+      } catch (err) {
+        console.error('Failed to load settings:', err)
+        addToast('Failed to load settings', 'error')
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadAll()
+  }, [])
 
   // ── Company Profile handlers ──────────────────────────────────────────
   const handleProfileChange = (field, value) =>
@@ -92,7 +87,7 @@ export default function Settings() {
   const handleYearChange = (id, field, value) =>
     setEditedProfile(prev => ({
       ...prev,
-      yearHistory: prev.yearHistory.map(h => h.id === id ? { ...h, [field]: value } : h)
+      yearHistory: (prev.yearHistory || []).map(h => h.id === id ? { ...h, [field]: value } : h)
     }))
 
   const handleRemoveYear = id =>
@@ -102,86 +97,136 @@ export default function Settings() {
     }))
 
   const handleSaveProfile = async () => {
-    await new Promise(r => setTimeout(r, 800))
-    setProfile(editedProfile)
-    setIsEditing(false)
-    addToast('Company profile updated successfully!', 'success')
+    try {
+      const updated = await settingsService.updateProfile(editedProfile)
+      const data = updated?.data || updated || editedProfile
+      setProfile(data)
+      setEditedProfile(data)
+      setIsEditing(false)
+      addToast('Company profile updated successfully!', 'success')
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to update profile', 'error')
+    }
   }
 
   // ── Organization handlers ─────────────────────────────────────────────
   const openOrgCreate = () => { setOrgForm(EMPTY_ORG); setOrgModal({ show: true, mode: 'create', data: null }) }
   const openOrgEdit = item => { setOrgForm({ name: item.name, position: item.position, description: item.description }); setOrgModal({ show: true, mode: 'edit', data: item }) }
   const closeOrgModal = () => setOrgModal({ show: false, mode: 'create', data: null })
-  const handleOrgSave = () => {
+  const handleOrgSave = async () => {
     if (!orgForm.name || !orgForm.position) return
-    if (orgModal.mode === 'create') {
-      setOrganization(prev => [...prev, { id: Date.now(), ...orgForm }])
-      addToast('Organization member added!', 'success')
-    } else {
-      setOrganization(prev => prev.map(o => o.id === orgModal.data.id ? { ...o, ...orgForm } : o))
-      addToast('Organization member updated!', 'success')
+    try {
+      const fd = new FormData()
+      Object.entries(orgForm).forEach(([k, v]) => { if (v != null) fd.append(k, v) })
+      if (orgModal.mode === 'create') {
+        const created = await settingsService.addOrganization(fd)
+        setOrganization(prev => [...prev, created?.data || created])
+        addToast('Organization member added!', 'success')
+      } else {
+        const updated = await settingsService.updateOrganization(orgModal.data.id, fd)
+        setOrganization(prev => prev.map(o => o.id === orgModal.data.id ? (updated?.data || updated) : o))
+        addToast('Organization member updated!', 'success')
+      }
+      closeOrgModal()
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to save organization member', 'error')
     }
-    closeOrgModal()
   }
 
   // ── Services handlers ─────────────────────────────────────────────────
   const openServiceCreate = () => { setServiceForm(EMPTY_SERVICE); setServiceModal({ show: true, mode: 'create', data: null }) }
   const openServiceEdit = item => { setServiceForm({ title: item.title, description: item.description, icon: item.icon || '' }); setServiceModal({ show: true, mode: 'edit', data: item }) }
   const closeServiceModal = () => setServiceModal({ show: false, mode: 'create', data: null })
-  const handleServiceSave = () => {
+  const handleServiceSave = async () => {
     if (!serviceForm.title || !serviceForm.description) return
-    if (serviceModal.mode === 'create') {
-      setServices(prev => [...prev, { id: Date.now(), ...serviceForm }])
-      addToast('Service added!', 'success')
-    } else {
-      setServices(prev => prev.map(s => s.id === serviceModal.data.id ? { ...s, ...serviceForm } : s))
-      addToast('Service updated!', 'success')
+    try {
+      if (serviceModal.mode === 'create') {
+        const created = await settingsService.addService(serviceForm)
+        setServices(prev => [...prev, created?.data || created])
+        addToast('Service added!', 'success')
+      } else {
+        const updated = await settingsService.updateService(serviceModal.data.id, serviceForm)
+        setServices(prev => prev.map(s => s.id === serviceModal.data.id ? (updated?.data || updated) : s))
+        addToast('Service updated!', 'success')
+      }
+      closeServiceModal()
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to save service', 'error')
     }
-    closeServiceModal()
   }
 
   // ── Know Us handlers ──────────────────────────────────────────────────
   const openKnowUsCreate = () => { setKnowUsForm(EMPTY_KNOWUS); setKnowUsModal({ show: true, mode: 'create', data: null }) }
   const openKnowUsEdit = item => { setKnowUsForm({ title: item.title, description: item.description, icon: item.icon || '' }); setKnowUsModal({ show: true, mode: 'edit', data: item }) }
   const closeKnowUsModal = () => setKnowUsModal({ show: false, mode: 'create', data: null })
-  const handleKnowUsSave = () => {
+  const handleKnowUsSave = async () => {
     if (!knowUsForm.title || !knowUsForm.description) return
-    if (knowUsModal.mode === 'create') {
-      setKnowUs(prev => [...prev, { id: Date.now(), ...knowUsForm }])
-      addToast('Know Us item added!', 'success')
-    } else {
-      setKnowUs(prev => prev.map(k => k.id === knowUsModal.data.id ? { ...k, ...knowUsForm } : k))
-      addToast('Know Us item updated!', 'success')
+    try {
+      if (knowUsModal.mode === 'create') {
+        const created = await settingsService.addKnowUs(knowUsForm)
+        setKnowUs(prev => [...prev, created?.data || created])
+        addToast('Know Us item added!', 'success')
+      } else {
+        const updated = await settingsService.updateKnowUs(knowUsModal.data.id, knowUsForm)
+        setKnowUs(prev => prev.map(k => k.id === knowUsModal.data.id ? (updated?.data || updated) : k))
+        addToast('Know Us item updated!', 'success')
+      }
+      closeKnowUsModal()
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to save Know Us item', 'error')
     }
-    closeKnowUsModal()
   }
 
   // ── Benefits handlers ─────────────────────────────────────────────────
   const openBenefitCreate = () => { setBenefitForm(EMPTY_BENEFIT); setBenefitModal({ show: true, mode: 'create', data: null }) }
   const openBenefitEdit = item => { setBenefitForm({ title: item.title, module: item.module, description: item.description, icon: item.icon || '' }); setBenefitModal({ show: true, mode: 'edit', data: item }) }
   const closeBenefitModal = () => setBenefitModal({ show: false, mode: 'create', data: null })
-  const handleBenefitSave = () => {
+  const handleBenefitSave = async () => {
     if (!benefitForm.title || !benefitForm.description) return
-    if (benefitModal.mode === 'create') {
-      setBenefits(prev => [...prev, { id: Date.now(), ...benefitForm }])
-      addToast('Benefit added!', 'success')
-    } else {
-      setBenefits(prev => prev.map(b => b.id === benefitModal.data.id ? { ...b, ...benefitForm } : b))
-      addToast('Benefit updated!', 'success')
+    try {
+      if (benefitModal.mode === 'create') {
+        const created = await settingsService.addBenefit(benefitForm)
+        setBenefits(prev => [...prev, created?.data || created])
+        addToast('Benefit added!', 'success')
+      } else {
+        const updated = await settingsService.updateBenefit(benefitModal.data.id, benefitForm)
+        setBenefits(prev => prev.map(b => b.id === benefitModal.data.id ? (updated?.data || updated) : b))
+        addToast('Benefit updated!', 'success')
+      }
+      closeBenefitModal()
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to save benefit', 'error')
     }
-    closeBenefitModal()
   }
 
   // ── Delete handlers ───────────────────────────────────────────────────
   const openDelete = (type, id, name) => setDeleteModal({ show: true, type, id, name })
   const closeDelete = () => setDeleteModal({ show: false, type: '', id: null, name: '' })
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     const { type, id } = deleteModal
-    if (type === 'organization') { setOrganization(prev => prev.filter(o => o.id !== id)); addToast('Organization member removed!', 'success') }
-    else if (type === 'service') { setServices(prev => prev.filter(s => s.id !== id)); addToast('Service removed!', 'success') }
-    else if (type === 'knowus') { setKnowUs(prev => prev.filter(k => k.id !== id)); addToast('Know Us item removed!', 'success') }
-    else if (type === 'benefit') { setBenefits(prev => prev.filter(b => b.id !== id)); addToast('Benefit removed!', 'success') }
-    closeDelete()
+    try {
+      if (type === 'organization') {
+        await settingsService.deleteOrganization(id)
+        setOrganization(prev => prev.filter(o => o.id !== id))
+        addToast('Organization member removed!', 'success')
+      } else if (type === 'service') {
+        await settingsService.deleteService(id)
+        setServices(prev => prev.filter(s => s.id !== id))
+        addToast('Service removed!', 'success')
+      } else if (type === 'knowus') {
+        await settingsService.deleteKnowUs(id)
+        setKnowUs(prev => prev.filter(k => k.id !== id))
+        addToast('Know Us item removed!', 'success')
+      } else if (type === 'benefit') {
+        await settingsService.deleteBenefit(id)
+        setBenefits(prev => prev.filter(b => b.id !== id))
+        addToast('Benefit removed!', 'success')
+      }
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to delete item', 'error')
+    } finally {
+      closeDelete()
+    }
   }
 
   const menuItems = [
@@ -291,7 +336,7 @@ export default function Settings() {
                           <button type="button" className="btn-add-small" onClick={handleAddYear}><Plus size={14} /> Add Year</button>
                         </div>
                         <div className="year-history-list">
-                          {editedProfile.yearHistory.map(h => (
+                          {(editedProfile.yearHistory || []).map(h => (
                             <div key={h.id} className="year-history-item">
                               <input
                                 type="text"
@@ -312,7 +357,7 @@ export default function Settings() {
                               </button>
                             </div>
                           ))}
-                          {editedProfile.yearHistory.length === 0 && (
+                          {(editedProfile.yearHistory || []).length === 0 && (
                             <p className="no-items-hint">No year history yet. Click "Add Year" to start.</p>
                           )}
                         </div>
@@ -368,11 +413,11 @@ export default function Settings() {
                         </div>
                       </div>
 
-                      {profile.yearHistory.length > 0 && (
+                      {(profile.yearHistory || []).length > 0 && (
                         <div className="profile-year-history">
                           <span className="profile-label">Year History</span>
                           <div className="year-history-display">
-                            {profile.yearHistory.map(h => (
+                            {(profile.yearHistory || []).map(h => (
                               <div key={h.id} className="year-history-display-item">
                                 <span className="year-badge">{h.year}</span>
                                 <span>{h.description}</span>

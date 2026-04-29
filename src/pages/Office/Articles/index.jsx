@@ -1,85 +1,75 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FileText, Trash2, Edit2 } from 'lucide-react'
-import { logActivity, ACTIVITY_TYPES } from '../../../services/activityLog'
+import { articleService } from '../../../services/articleService'
+import { useToast } from '../../../components/Toast/Toast'
 import './articles.css'
-
-const defaultArticles = [
-  {
-    id: 1,
-    title: 'Investment Strategy for Real Estate Assets in the Digital Era',
-    category: 'Investment',
-    author: 'Summa Capital',
-    status: 'Published',
-    createdDate: '2026-04-25',
-    views: 245
-  },
-  {
-    id: 2,
-    title: 'Complete Guide to Online Asset Auctions',
-    category: 'Auction',
-    author: 'Summa Capital',
-    status: 'Published',
-    createdDate: '2026-04-22',
-    views: 189
-  },
-  {
-    id: 3,
-    title: 'Investment Portfolio Diversification: Expert Tips',
-    category: 'Strategy',
-    author: 'Summa Capital',
-    status: 'Draft',
-    createdDate: '2026-04-20',
-    views: 0
-  }
-]
 
 export default function Articles() {
   const navigate = useNavigate()
-  const [articles, setArticles] = useState(defaultArticles)
+  const { toasts, addToast, removeToast, Toast } = useToast()
+  const [articles, setArticles] = useState([])
+  const [loading, setLoading] = useState(true)
   const [deleteModal, setDeleteModal] = useState({ show: false, id: null, title: '' })
   const [searchTerm, setSearchTerm] = useState('')
 
+  const fetchArticles = async () => {
+    try {
+      setLoading(true)
+      const result = await articleService.listAdmin(1, 100)
+      setArticles(Array.isArray(result) ? result : (result?.data || []))
+    } catch (err) {
+      addToast('Failed to load articles', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchArticles()
+  }, [])
+
   const filteredArticles = articles.filter(article =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    article.category.toLowerCase().includes(searchTerm.toLowerCase())
+    (article.category || '').toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleDeleteClick = (id, title) => {
     setDeleteModal({ show: true, id, title })
   }
 
-  const handleConfirmDelete = () => {
-    logActivity('DELETE_ARTICLE', {
-      articleId: deleteModal.id,
-      articleTitle: deleteModal.title
-    })
-    
-    setArticles(prev => prev.filter(a => a.id !== deleteModal.id))
-    setDeleteModal({ show: false, id: null, title: '' })
+  const handleConfirmDelete = async () => {
+    try {
+      await articleService.delete(deleteModal.id)
+      setArticles(prev => prev.filter(a => a.id !== deleteModal.id))
+      addToast('Article deleted successfully', 'success')
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to delete article', 'error')
+    } finally {
+      setDeleteModal({ show: false, id: null, title: '' })
+    }
   }
 
   const handleCancelDelete = () => {
     setDeleteModal({ show: false, id: null, title: '' })
   }
 
-  const handleStatusToggle = (id) => {
-    setArticles(prev => prev.map(article =>
-      article.id === id
-        ? { ...article, status: article.status === 'Draft' ? 'Published' : 'Draft' }
-        : article
-    ))
-    
+  const handleStatusToggle = async (id) => {
     const article = articles.find(a => a.id === id)
-    logActivity('UPDATE_ARTICLE', {
-      articleId: id,
-      articleTitle: article.title,
-      action: `Status changed to ${article.status === 'Draft' ? 'Published' : 'Draft'}`
-    })
+    if (!article) return
+    const newStatus = article.status === 'Draft' ? 'Published' : 'Draft'
+    try {
+      await articleService.toggleStatus(id, newStatus)
+      setArticles(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a))
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to update status', 'error')
+    }
   }
 
   return (
     <div className="office-page">
+      <Toast toasts={toasts} removeToast={removeToast} />
+
       <div className="office-header">
         <div className="office-header-content">
           <h1 className="office-header-title">
@@ -102,7 +92,9 @@ export default function Articles() {
           />
         </div>
 
-        {filteredArticles.length === 0 ? (
+        {loading ? (
+          <div className="loading-state">Loading articles...</div>
+        ) : filteredArticles.length === 0 ? (
           <div className="empty-state">
             <FileText size={48} />
             <h3>No articles found</h3>
@@ -132,14 +124,14 @@ export default function Articles() {
                     <td>{article.author}</td>
                     <td>
                       <button
-                        className={`status-btn ${article.status.toLowerCase()}`}
+                        className={`status-btn ${article.status?.toLowerCase()}`}
                         onClick={() => handleStatusToggle(article.id)}
                       >
                         {article.status}
                       </button>
                     </td>
-                    <td>{new Date(article.createdDate).toLocaleDateString('id-ID')}</td>
-                    <td className="views-count">{article.views}</td>
+                    <td>{article.createdAt ? new Date(article.createdAt).toLocaleDateString('id-ID') : '-'}</td>
+                    <td className="views-count">{article.views || 0}</td>
                     <td className="actions-cell">
                       <button
                         className="action-btn edit"

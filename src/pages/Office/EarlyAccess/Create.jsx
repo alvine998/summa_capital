@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, ImageIcon, X } from 'lucide-react'
 import { useToast } from '../../../components/Toast/Toast'
+import earlyAccessService from '../../../services/earlyAccessService'
 import { formatPriceInput } from '../../../utils/priceFormatter'
 import './style.css'
 
@@ -58,11 +59,30 @@ export default function CreateEarlyAccess() {
     }
     setLoading(true)
     try {
-      await new Promise(r => setTimeout(r, 1000))
+      // Build FormData with images
+      const formData = new FormData()
+      formData.append('title', form.title)
+      formData.append('description', form.description)
+      formData.append('estimate', form.estimate)
+      formData.append('deadline', form.deadline)
+      formData.append('location', form.location)
+      formData.append('area', form.area)
+      formData.append('buildingArea', form.buildingArea)
+      formData.append('fieldArea', form.fieldArea)
+      formData.append('status', form.status)
+      
+      // Add images
+      images.forEach(img => {
+        formData.append('images', img.file)
+      })
+
+      // Call API
+      await earlyAccessService.create(formData)
       addToast('Early Access item created successfully!', 'success')
       setTimeout(() => navigate('/office/early-access'), 500)
-    } catch {
-      setError('An error occurred while saving')
+    } catch (err) {
+      console.error('Failed to create early access item:', err)
+      setError(err.response?.data?.message || 'An error occurred while saving')
     } finally {
       setLoading(false)
     }
