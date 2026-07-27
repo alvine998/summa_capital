@@ -1,0 +1,76 @@
+.kasirin-pp {
+  min-height: 100vh;
+  background: #f7f7f8;
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  line-height: 1.65;
+}
+
+.kasirin-pp__header {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 1.5rem;
+}
+
+.kasirin-pp__brand {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
+.kasirin-pp__header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.kasirin-pp__meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.kasirin-pp__body {
+  max-width: 720px;
+  margin: 0 auto 3rem;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.kasirin-pp__body h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.kasirin-pp__body p,
+.kasirin-pp__body ul {
+  margin: 0 0 1rem;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.kasirin-pp__body ul {
+  padding-left: 1.25rem;
+}
+
+.kasirin-pp__body li {
+  margin-bottom: 0.4rem;
+}
+
+.kasirin-pp__body strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .kasirin-pp__body {
+    padding: 2.5rem 2.5rem 3.5rem;
+  }
+}
